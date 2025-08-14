@@ -1,0 +1,313 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 14px;
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #030213;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Cyberpunk colors */
+  --cyber-purple: #A020F0;
+  --cyber-cyan: #00E0FF;
+  --cyber-blue: #0FF4F8;
+  --cyber-dark: #0a0a0f;
+  --cyber-darker: #050508;
+  --cyber-grid: rgba(160, 32, 240, 0.1);
+}
+
+.dark {
+  --background: var(--cyber-dark);
+  --foreground: #ffffff;
+  --card: var(--cyber-darker);
+  --card-foreground: #ffffff;
+  --popover: var(--cyber-darker);
+  --popover-foreground: #ffffff;
+  --primary: var(--cyber-purple);
+  --primary-foreground: #ffffff;
+  --secondary: rgba(160, 32, 240, 0.2);
+  --secondary-foreground: #ffffff;
+  --muted: rgba(160, 32, 240, 0.1);
+  --muted-foreground: rgba(255, 255, 255, 0.7);
+  --accent: rgba(0, 224, 255, 0.2);
+  --accent-foreground: #ffffff;
+  --destructive: #ff1744;
+  --destructive-foreground: #ffffff;
+  --border: rgba(160, 32, 240, 0.3);
+  --input: rgba(160, 32, 240, 0.1);
+  --ring: var(--cyber-cyan);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: var(--cyber-purple);
+  --chart-2: var(--cyber-cyan);
+  --chart-3: var(--cyber-blue);
+  --chart-4: #ff1744;
+  --chart-5: #00ff41;
+  --sidebar: var(--cyber-darker);
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: var(--cyber-purple);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(160, 32, 240, 0.2);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(160, 32, 240, 0.3);
+  --sidebar-ring: var(--cyber-cyan);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'JetBrains Mono', monospace;
+    overflow: hidden;
+  }
+  
+  .orbitron {
+    font-family: 'Orbitron', monospace;
+  }
+  
+  .jetbrains {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* Cyberpunk animations and effects */
+@keyframes glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px var(--cyber-purple), 0 0 40px var(--cyber-purple), 0 0 60px var(--cyber-purple);
+  }
+  50% { 
+    box-shadow: 0 0 10px var(--cyber-purple), 0 0 20px var(--cyber-purple), 0 0 30px var(--cyber-purple);
+  }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.cyber-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.cyber-flicker {
+  animation: flicker 1.5s ease-in-out infinite;
+}
+
+.cyber-glitch {
+  animation: glitch 0.3s ease-in-out infinite;
+}
+
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(160, 32, 240, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(160, 32, 240, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.cyber-border {
+  border: 1px solid var(--cyber-purple);
+  box-shadow: 
+    0 0 10px rgba(160, 32, 240, 0.5),
+    inset 0 0 10px rgba(160, 32, 240, 0.1);
+}
+
+.cyber-text-glow {
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 15px currentColor;
+}
+
+.terminal-cursor::after {
+  content: "_";
+  animation: blink 1s infinite;
+}
+
+.scanline {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyber-cyan), transparent);
+  animation: scanlines 3s linear infinite;
+  top: 0;
+  left: 0;
+}
+
+.glowing-logo {
+  /* очень мягкое свечение */
+  filter: drop-shadow(0 0 1px #00f0ff) drop-shadow(0 0 2px #00f0ff);
+  animation: glowPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 1px #00f0ff) drop-shadow(0 0 2px #00f0ff);
+  }
+  50% {
+    filter: drop-shadow(0 0 0 #00f0ff) drop-shadow(0 0 1px #00f0ff);
+  }
+}
