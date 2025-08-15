@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Zap, User, Briefcase, Mail, RotateCcw, LogOut, HelpCircle } from 'lucide-react';
-
+import { useLanguage } from './LanguageContext';
 type Screen = 'profile' | 'skills' | 'projects' | 'contacts' | 'boot';
 
 interface TerminalScreenProps {
@@ -17,16 +17,17 @@ interface Command {
 }
 
 const TerminalScreen: React.FC<TerminalScreenProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([
     '╔═══════════════════════════════════════════════════════════════╗',
-    '║                    PersonalityOS v1.0                        ║',
-    '║                  Neural Interface Active                     ║',
+    t('terminal.bannerLine1'),
+    t('terminal.bannerLine2'),
     '╚═══════════════════════════════════════════════════════════════╝',
     '',
-    '◉ System initialized successfully',
-    '◉ Neural pathways established',
-    '◉ Type "help" or use TAB for autocomplete',
+    t('terminal.initSuccess'),
+    t('terminal.neuralEstablished'),
+    t('terminal.helpHint'),
     ''
   ]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -37,21 +38,21 @@ const TerminalScreen: React.FC<TerminalScreenProps> = ({ onNavigate }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const commands: Command[] = [
-    { name: 'help', description: 'Display available commands and usage information', action: 'Available commands: help, profile, skills, projects, contact, whoami, status, clear, exit', icon: <HelpCircle size={16} />, category: 'info' },
-    { name: 'profile', description: 'View personal profile and neural data', action: () => onNavigate('profile'), icon: <User size={16} />, category: 'navigation' },
-    { name: 'skills', description: 'Access skill matrix and abilities overview', action: () => onNavigate('skills'), icon: <Zap size={16} />, category: 'navigation' },
-    { name: 'projects', description: 'Browse project archive and portfolio', action: () => onNavigate('projects'), icon: <Briefcase size={16} />, category: 'navigation' },
-    { name: 'contact', description: 'Access communication channels and contact info', action: () => onNavigate('contacts'), icon: <Mail size={16} />, category: 'navigation' },
-    { name: 'clear', description: 'Clear terminal history and reset display', action: () => setHistory([
+    { name: 'help', description: t('commands.help.description'), action: 'Available commands: help, profile, skills, projects, contact, whoami, status, clear, exit', icon: <HelpCircle size={16} />, category: 'info' },
+    { name: 'profile', description: t('commands.profile.description'), action: () => onNavigate('profile'), icon: <User size={16} />, category: 'navigation' },
+    { name: 'skills', description: t('commands.skills.description'), action: () => onNavigate('skills'), icon: <Zap size={16} />, category: 'navigation' },
+    { name: 'projects', description: t('commands.projects.description'), action: () => onNavigate('projects'), icon: <Briefcase size={16} />, category: 'navigation' },
+    { name: 'contact', description: t('commands.contact.description'), action: () => onNavigate('contacts'), icon: <Mail size={16} />, category: 'navigation' },
+    { name: 'clear', description: t('commands.clear.description'), action: () => setHistory([
         '╔═══════════════════════════════════════════════════════════════╗',
         '║                    PersonalityOS v1.0                        ║',
         '║                  Neural Interface Active                     ║',
         '╚═══════════════════════════════════════════════════════════════╝',
         ''
       ]), icon: <RotateCcw size={16} />, category: 'system' },
-    { name: 'exit', description: 'Return to boot sequence', action: () => onNavigate('boot'), icon: <LogOut size={16} />, category: 'system' },
-    { name: 'whoami', description: 'Display current user information', action: 'User: Linnorm | Role: Frontend Developer | Status: Available', icon: <User size={16} />, category: 'info' },
-    { name: 'status', description: 'Show system status and metrics', action: 'System Status: ONLINE | CPU: 45% | Memory: 67% | Neural Load: 23%', icon: <Zap size={16} />, category: 'info' }
+    { name: 'exit', description: t('commands.exit.description'), action: () => onNavigate('boot'), icon: <LogOut size={16} />, category: 'system' },
+    { name: 'whoami', description: t('commands.whoami.description'), action: 'User: Linnorm | Role: Frontend Developer | Status: Available', icon: <User size={16} />, category: 'info' },
+    { name: 'status', description: t('commands.status.description'), action: 'System Status: ONLINE | CPU: 45% | Memory: 67% | Neural Load: 23%', icon: <Zap size={16} />, category: 'info' }
   ];
 
   useEffect(() => {

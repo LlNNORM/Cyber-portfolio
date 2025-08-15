@@ -7,10 +7,13 @@ import ProfileScreen from './components/ProfileScreen';
 import ProjectsScreen from './components/ProjectsScreen';
 import ContactsScreen from './components/ContactsScreen';
 import SkillsScreen from './components/SkillsScreen';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import { LanguageProvider } from './components/LanguageContext';
+
 
 type Screen = 'boot' | 'terminal' | 'profile' |'skills'| 'projects' | 'contacts';
 
-export default function App() {
+export function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('boot');
   const [isGlitching, setIsGlitching] = useState(false);
   const skills = []
@@ -78,6 +81,12 @@ const glitchVariants: Variants = {
 
   return (
     <div className="relative w-full h-screen bg-[#050508] overflow-hidden">
+      {/* Language switcher - visible on all screens except boot */}
+      {currentScreen !== 'boot' && (
+        <div className="fixed top-4 right-4 z-50">
+          <LanguageSwitcher />
+        </div>
+      )}
       {/* Global glitch overlay */}
       {isGlitching && (
         <div className="fixed inset-0 z-50 pointer-events-none">
@@ -192,5 +201,13 @@ const glitchVariants: Variants = {
       )} */}
       
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }

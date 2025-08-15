@@ -2,23 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 // import logo from '../assets/dragon-logo.svg';
 import Logo from '../assets/dragon-logo.svg?react';
+import { useLanguage } from './LanguageContext';
 
 interface BootScreenProps {
   onComplete: () => void;
 }
 
 const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
+  const { t } = useLanguage();
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   
-  const bootSteps = [
-    "Booting PersonalityOS v1.0...",
-    "Initializing Neural Networks...",
-    "Loading Creativity Core...",
-    "Establishing Git Connections...",
-    "Calibrating JavaScript Engine...",
-    "Mounting React Components...",
-    "System Ready."
+  // const bootSteps = [
+  //   "Booting PersonalityOS v1.0...",
+  //   "Initializing Neural Networks...",
+  //   "Loading Creativity Core...",
+  //   "Establishing Git Connections...",
+  //   "Calibrating JavaScript Engine...",
+  //   "Mounting React Components...",
+  //   "System Ready."
+  // ];
+    const bootSteps = [
+    'boot.initializing',
+    'boot.loading',
+    'boot.establishing',
+    'boot.calibrating', 
+    'boot.activating', 
+    'boot.ready',
+    'boot.welcome'
   ];
 
   useEffect(() => {
@@ -105,7 +116,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
               repeat: 1,
             }}
           >
-            {bootSteps[currentStep]}
+            {t(bootSteps[currentStep])}
           </motion.p>
         </motion.div>
 
@@ -126,7 +137,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
             />
           </div>
           <div className="flex justify-between jetbrains text-sm text-[#0FF4F8]">
-            <span className="w-[90px]">LOADING...</span>
+            <span className="w-[90px]">{t('boot.progressBar_loading')}</span>
             <span className="w-[40px] text-right">{progress}%</span>
           </div>
         </motion.div>
