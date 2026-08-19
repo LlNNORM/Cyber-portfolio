@@ -60,7 +60,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
     }, 800);
 
     return () => clearInterval(stepInterval);
-  }, []);
+  }, [bootSteps.length]);
 
   return (
     <div className="fixed inset-0 w-screen h-screen  flex items-center justify-center cyber-grid overflow-hidden">

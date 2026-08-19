@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, MessageCircle, Mail, MapPin, Calendar } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import FloatingElement from './FloatingElement';
+import {FloatingBackground } from './FloatingElement';
 interface ContactsScreenProps {
   onBack: () => void;
 }
@@ -49,40 +49,12 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
     }
   ];
 
-  const floatingElements = Array.from({ length: 30 }, (_, i) => ({
-    id: i,
-    symbol: ['◆', '◇', '▲', '△', '●', '○', '■', '□'][i % 8],
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: 10 + Math.random() * 20,
-    delay: Math.random() * 5
-  }));
+
 
   return (
     <div className=" bg-[#0a0a0f] cyber-grid p-4 md:p-8">
-      {/* <div className="scanline"></div> */}
-      
       {/* Floating Elements */}
-      {floatingElements.map((element) => (
-        <motion.div
-          key={element.id}
-          className="absolute text-[#A020F0] text-opacity-20 text-2xl pointer-events-none"
-          style={{ left: `${element.x}%`, top: `${element.y}%` }}
-          animate={{
-            y: [0, -50, 0],
-            opacity: [0.3, 0.6, 0.3],
-            rotate: [0, 180, 360]
-          }}
-          transition={{
-            duration: element.duration,
-            delay: element.delay,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        >
-          {element.symbol}
-        </motion.div>
-      ))}
+      <FloatingBackground/>
       
       <motion.div 
         className="max-w-6xl mx-auto h-full flex flex-col relative z-10"
