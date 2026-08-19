@@ -1,8 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Globe, Database, Settings, Palette, Cpu, Terminal, Zap, Filter } from 'lucide-react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import {
+  Code,
+  Globe,
+  Database,
+  Settings,
+  Palette,
+  Cpu,
+  Terminal,
+  Zap,
+  Layers,
+  Server,
+  Shield,
+} from 'lucide-react';
 
-interface Skill {
+// --- ИНТЕРФЕЙСЫ ---
+
+export interface Skill {
   name: string;
   level: number;
   color: string;
@@ -10,258 +24,1080 @@ interface Skill {
 }
 
 interface SkillsSphereProps {
-  skills: Skill[];
+  skills?: Skill[];
+  onBack: () => void;
 }
 
-const SkillsSphere: React.FC<SkillsSphereProps> = ({ skills }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+interface LightningBranch {
+  path: string;
+  opacity: number;
+  width: number;
+}
 
-  // Get category icon
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Programming': return <Code className="w-5 h-5" />;
-      case 'Frontend': return <Globe className="w-5 h-5" />;
-      case 'Backend': return <Database className="w-5 h-5" />;
-      case 'DevOps': return <Settings className="w-5 h-5" />;
-      case 'Styling': return <Palette className="w-5 h-5" />;
-      case '3D Graphics': return <Cpu className="w-5 h-5" />;
-      case 'Testing': return <Terminal className="w-5 h-5" />;
-      case 'State Management': return <Zap className="w-5 h-5" />;
-      case 'Build Tools': return <Settings className="w-5 h-5" />;
-      case 'Framework': return <Code className="w-5 h-5" />;
-      case 'Animation': return <Palette className="w-5 h-5" />;
-      case 'Real-time': return <Zap className="w-5 h-5" />;
-      case 'API': return <Database className="w-5 h-5" />;
-      default: return <Zap className="w-5 h-5" />;
+// --- ДЕФОЛТНЫЙ МАССИВ ---
+
+const DEFAULT_SKILLS: Skill[] = [
+  {
+    name: 'JavaScript',
+    level: 90,
+    color: '#FFD700',
+    category: 'Programming',
+  },
+  {
+    name: 'TypeScript',
+    level: 85,
+    color: '#00E0FF',
+    category: 'Programming',
+  },
+  {
+    name: 'React',
+    level: 95,
+    color: '#0FF4F8',
+    category: 'Frontend',
+  },
+  {
+    name: 'Redux',
+    level: 80,
+    color: '#A020F0',
+    category: 'State Management',
+  },
+  {
+    name: 'REST API',
+    level: 88,
+    color: '#00ff41',
+    category: 'Backend',
+  },
+  {
+    name: 'Git',
+    level: 92,
+    color: '#FF6B35',
+    category: 'DevOps',
+  },
+  {
+    name: 'CSS/SCSS',
+    level: 87,
+    color: '#FF3366',
+    category: 'Styling',
+  },
+  {
+    name: 'Node.js',
+    level: 83,
+    color: '#00D9FF',
+    category: 'Backend',
+  },
+  {
+    name: 'MongoDB',
+    level: 75,
+    color: '#A020F0',
+    category: 'Database',
+  },
+  {
+    name: 'Webpack',
+    level: 78,
+    color: '#0FF4F8',
+    category: 'Build Tools',
+  },
+  {
+    name: 'Jest',
+    level: 82,
+    color: '#00ff41',
+    category: 'Testing',
+  },
+  {
+    name: 'Docker',
+    level: 70,
+    color: '#00E0FF',
+    category: 'DevOps',
+  },
+
+  {
+    name: 'GraphQL',
+    level: 76,
+    color: '#FF6B35',
+    category: 'API',
+  },
+  {
+    name: 'Next.js',
+    level: 85,
+    color: '#FF3366',
+    category: 'Framework',
+  },
+  {
+    name: 'Tailwind',
+    level: 90,
+    color: '#00D9FF',
+    category: 'Styling',
+  },
+  {
+    name: 'Framer Motion',
+    level: 84,
+    color: '#A020F0',
+    category: 'Animation',
+  },
+  {
+    name: 'WebSocket',
+    level: 79,
+    color: '#0FF4F8',
+    category: 'Real-time',
+  },
+];
+
+// --- СЛОВАРЬ ИКОНОК ---
+
+const getIconForCategory = (category: string) => {
+  switch (category) {
+    case 'Programming':
+      return Code;
+    case 'Frontend':
+      return Globe;
+    case 'Backend':
+      return Server;
+    case 'Database':
+      return Database;
+    case 'DevOps':
+      return Settings;
+    case 'Styling':
+      return Palette;
+    case '3D Graphics':
+      return Cpu;
+    case 'Testing':
+      return Terminal;
+    case 'Cloud':
+      return Layers;
+    case 'Cyber':
+      return Shield;
+    default:
+      return Zap;
+  }
+};
+
+// --- ВЫСОКОДЕТАЛИЗИРОВАННЫЙ ФРАКТАЛЬНЫЙ ГЕНЕРАТОР МОЛНИЙ ---
+
+const generateDetailedLightning = (
+  maxRadius: number
+): LightningBranch[] => {
+  const angle = Math.random() * Math.PI * 2;
+  const segments = 8 + Math.floor(Math.random() * 5);
+  const branches: LightningBranch[] = [];
+
+  let trunkPath = 'M 0 0';
+
+  for (let i = 1; i <= segments; i++) {
+    const t = i / segments;
+    const r = maxRadius * t;
+
+    const baseX = Math.cos(angle) * r;
+    const baseY = Math.sin(angle) * r;
+
+    const jitter =
+      (Math.random() - 0.5) * 22 * (1 - t * 0.2);
+
+    const nx =
+      baseX +
+      Math.cos(angle + Math.PI / 2) * jitter;
+
+    const ny =
+      baseY +
+      Math.sin(angle + Math.PI / 2) * jitter;
+
+    trunkPath += ` L ${nx} ${ny}`;
+
+    if (
+      i > 1 &&
+      i < segments - 1 &&
+      Math.random() < 0.45
+    ) {
+      const branchAngle =
+        angle + (Math.random() - 0.5) * 1.1;
+
+      const branchSegments =
+        3 + Math.floor(Math.random() * 3);
+
+      const branchLen =
+        25 + Math.random() * 35;
+
+      let branchPath = `M ${nx} ${ny}`;
+
+      let currBx = nx;
+      let currBy = ny;
+
+      for (
+        let b = 1;
+        b <= branchSegments;
+        b++
+      ) {
+        const bt = b / branchSegments;
+        const br = branchLen * bt;
+
+        const bBaseX =
+          nx + Math.cos(branchAngle) * br;
+
+        const bBaseY =
+          ny + Math.sin(branchAngle) * br;
+
+        const bJitter =
+          (Math.random() - 0.5) * 10;
+
+        currBx =
+          bBaseX +
+          Math.cos(branchAngle + Math.PI / 2) *
+            bJitter;
+
+        currBy =
+          bBaseY +
+          Math.sin(branchAngle + Math.PI / 2) *
+            bJitter;
+
+        branchPath += ` L ${currBx} ${currBy}`;
+
+        if (
+          b === 2 &&
+          Math.random() < 0.35
+        ) {
+          const microAngle =
+            branchAngle +
+            (Math.random() - 0.5) * 1.2;
+
+          const microLen =
+            10 + Math.random() * 15;
+
+          const mx =
+            currBx +
+            Math.cos(microAngle) * microLen;
+
+          const my =
+            currBy +
+            Math.sin(microAngle) * microLen;
+
+          branches.push({
+            path: `M ${currBx} ${currBy} L ${mx} ${my}`,
+            opacity: 0.2,
+            width: 0.5,
+          });
+        }
+      }
+
+      branches.push({
+        path: branchPath,
+        opacity: 0.35,
+        width: 0.8,
+      });
+    }
+  }
+
+  branches.unshift({
+    path: trunkPath,
+    opacity: 0.65,
+    width: 1.4,
+  });
+
+  return branches;
+};
+
+// --- КОМПОНЕНТ МОЛНИЙ ---
+
+const EnergyCore = () => {
+  const [
+    sparks,
+    setSparks,
+  ] = useState<
+    {
+      branches: LightningBranch[];
+      color: string;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let clearId: ReturnType<typeof setTimeout>;
+
+    const triggerLightning = () => {
+      const lightningCount =
+        2 + Math.floor(Math.random() * 3);
+
+      const newSparks = Array.from({
+        length: lightningCount,
+      }).map(() => ({
+        branches: generateDetailedLightning(
+          130 + Math.random() * 110
+        ),
+        color:
+          Math.random() > 0.4
+            ? '#0FF4F8'
+            : '#A020F0',
+      }));
+
+      setSparks(newSparks);
+
+      clearId = setTimeout(() => {
+        setSparks([]);
+      }, 70);
+
+      const nextDelay =
+        1500 + Math.random() * 1700;
+
+      timeoutId = setTimeout(
+        triggerLightning,
+        nextDelay
+      );
+    };
+
+    triggerLightning();
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(clearId);
+    };
+  }, []);
+
+  return (
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[150]">
+      <svg
+        width="600"
+        height="600"
+        viewBox="-300 -300 600 600"
+      >
+        <defs>
+          <filter
+            id="soft-glow"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feGaussianBlur
+              stdDeviation="2"
+              result="blur"
+            />
+
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {sparks.map((spark, i) => (
+          <g key={i}>
+            {spark.branches.map(
+              (branch, j) => (
+                <path
+                  key={j}
+                  d={branch.path}
+                  stroke={spark.color}
+                  strokeWidth={branch.width}
+                  fill="none"
+                  filter="url(#soft-glow)"
+                  opacity={branch.opacity}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              )
+            )}
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+};
+
+// --- ОСНОВНОЙ КОМПОНЕНТ СФЕРЫ ---
+
+const SkillsSphere: React.FC<
+  SkillsSphereProps
+> = ({ skills, onBack }) => {
+  const safeSkills = useMemo(() => {
+    return Array.isArray(skills) &&
+      skills.length > 0
+      ? skills
+      : DEFAULT_SKILLS;
+  }, [skills]);
+
+  const containerRef =
+    useRef<HTMLDivElement>(null);
+
+  const nodesRef = useRef<
+    Map<string, HTMLDivElement>
+  >(new Map());
+
+  const setNodeRef = (
+    name: string,
+    el: HTMLDivElement | null
+  ) => {
+    if (el) {
+      nodesRef.current.set(name, el);
+    } else {
+      nodesRef.current.delete(name);
     }
   };
 
-  // Get unique categories
-  const categories = ['All', ...Array.from(new Set(skills.map(skill => skill.category)))];
+  const [
+    hoveredSkill,
+    setHoveredSkill,
+  ] = useState<Skill | null>(null);
 
-  // Filter skills by category
-  const filteredSkills = selectedCategory === 'All' 
-    ? skills 
-    : skills.filter(skill => skill.category === selectedCategory);
+  // =========================
+  // ROTATION
+  // =========================
 
-  // Get skill level status
-  const getSkillStatus = (level: number) => {
-    if (level >= 90) return { status: 'EXPERT', color: '#00ff41' };
-    if (level >= 80) return { status: 'ADVANCED', color: '#00E0FF' };
-    if (level >= 70) return { status: 'PROFICIENT', color: '#0FF4F8' };
-    return { status: 'INTERMEDIATE', color: '#A020F0' };
-  };
+  const rotationRef = useRef({
+    x: 0,
+    y: 0,
+  });
+
+  // =========================
+  // DRAG STATE
+  // =========================
+
+  const dragRef = useRef({
+    active: false,
+    startX: 0,
+    startY: 0,
+    lastX: 0,
+    lastY: 0,
+  });
+
+  // =========================
+  // INERTIA
+  // =========================
+
+  const velocityRef = useRef({
+    x: 0,
+    y: 0,
+  });
+
+  const hoveredSkillRef =
+    useRef<Skill | null>(null);
+
+  useEffect(() => {
+    hoveredSkillRef.current =
+      hoveredSkill;
+  }, [hoveredSkill]);
+
+  const radius = 220;
+
+  const baseSpeed = 0.003;
+
+  // =========================
+  // ТОЧКИ НА СФЕРЕ
+  // =========================
+
+  const points = useMemo(() => {
+    const pts: {
+      x: number;
+      y: number;
+      z: number;
+    }[] = [];
+
+    const len = safeSkills.length;
+
+    const divisor =
+      len > 1 ? len - 1 : 1;
+
+    const phi =
+      Math.PI * (3 - Math.sqrt(5));
+
+    for (
+      let i = 0;
+      i < len;
+      i++
+    ) {
+      const y =
+        1 -
+        (i / divisor) * 2;
+
+      const radiusAtY =
+        Math.sqrt(
+          Math.max(
+            0,
+            1 - y * y
+          )
+        );
+
+      const theta = phi * i;
+
+      const x =
+        Math.cos(theta) *
+        radiusAtY;
+
+      const z =
+        Math.sin(theta) *
+        radiusAtY;
+
+      pts.push({
+        x,
+        y,
+        z,
+      });
+    }
+
+    return pts;
+  }, [safeSkills.length]);
+
+  // =========================
+  // ROTATION ENGINE
+  // =========================
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const container =
+      containerRef.current;
+
+    if (!container) return;
+
+    // =========================
+    // POINTER DOWN
+    // =========================
+
+    const handlePointerDown = (
+      e: PointerEvent
+    ) => {
+      // На ПК разрешаем только левую кнопку мыши
+      if (
+        e.pointerType === 'mouse' &&
+        e.button !== 0
+      ) {
+        return;
+      }
+
+      dragRef.current.active = true;
+
+      dragRef.current.startX =
+        e.clientX;
+
+      dragRef.current.startY =
+        e.clientY;
+
+      dragRef.current.lastX =
+        e.clientX;
+
+      dragRef.current.lastY =
+        e.clientY;
+
+      // Останавливаем инерцию
+      velocityRef.current.x = 0;
+      velocityRef.current.y = 0;
+
+      container.setPointerCapture(
+        e.pointerId
+      );
+    };
+
+    // =========================
+    // POINTER MOVE
+    // =========================
+
+    const handlePointerMove = (
+      e: PointerEvent
+    ) => {
+      if (!dragRef.current.active) {
+        return;
+      }
+
+      const deltaX =
+        e.clientX -
+        dragRef.current.lastX;
+
+      const deltaY =
+        e.clientY -
+        dragRef.current.lastY;
+
+      dragRef.current.lastX =
+        e.clientX;
+
+      dragRef.current.lastY =
+        e.clientY;
+
+      // Чувствительность вращения
+      const sensitivity = 0.008;
+
+      // Горизонтальное движение
+      // вращает сферу вокруг Y
+      rotationRef.current.y +=
+        deltaX * sensitivity;
+
+      // Вертикальное движение
+      // вращает сферу вокруг X
+      rotationRef.current.x +=
+        deltaY * sensitivity;
+
+      // Ограничиваем вертикальное вращение
+      const maxRotationX =
+        Math.PI / 2;
+
+      rotationRef.current.x =
+        Math.max(
+          -maxRotationX,
+          Math.min(
+            maxRotationX,
+            rotationRef.current.x
+          )
+        );
+
+      // Сохраняем скорость для инерции
+      velocityRef.current.y =
+        deltaX * sensitivity;
+
+      velocityRef.current.x =
+        deltaY * sensitivity;
+    };
+
+    // =========================
+    // POINTER UP
+    // =========================
+
+    const handlePointerUp = (
+      e: PointerEvent
+    ) => {
+      if (!dragRef.current.active) {
+        return;
+      }
+
+      dragRef.current.active = false;
+
+      try {
+        container.releasePointerCapture(
+          e.pointerId
+        );
+      } catch {
+        // Pointer capture уже мог быть освобождён
+      }
+    };
+
+    // =========================
+    // ANIMATION
+    // =========================
+
+    const updatePositions = () => {
+      const isDragging =
+        dragRef.current.active;
+
+      // Если пользователь не тащит сферу,
+      // включаем автоматическое вращение
+      // и инерцию.
+      if (!isDragging) {
+        const currentSpeed =
+          hoveredSkillRef.current
+            ? baseSpeed * 0.1
+            : baseSpeed;
+
+        // Автоматическое вращение
+        rotationRef.current.y +=
+          currentSpeed;
+
+        // Плавно уменьшаем инерцию
+        velocityRef.current.x *=
+          0.94;
+
+        velocityRef.current.y *=
+          0.94;
+
+        // Добавляем остаточное движение
+        rotationRef.current.x +=
+          velocityRef.current.x;
+
+        rotationRef.current.y +=
+          velocityRef.current.y;
+      }
+
+      const cosX =
+        Math.cos(
+          rotationRef.current.x
+        );
+
+      const sinX =
+        Math.sin(
+          rotationRef.current.x
+        );
+
+      const cosY =
+        Math.cos(
+          rotationRef.current.y
+        );
+
+      const sinY =
+        Math.sin(
+          rotationRef.current.y
+        );
+
+      safeSkills.forEach(
+        (skill, i) => {
+          const item =
+            nodesRef.current.get(
+              skill.name
+            );
+
+          if (
+            !item ||
+            !points[i]
+          ) {
+            return;
+          }
+
+          const p = points[i];
+
+          // =========================
+          // ROTATION Y
+          // =========================
+
+          const x1 =
+            p.x * cosY +
+            p.z * sinY;
+
+          const z1 =
+            -p.x * sinY +
+            p.z * cosY;
+
+          // =========================
+          // ROTATION X
+          // =========================
+
+          const y2 =
+            p.y * cosX -
+            z1 * sinX;
+
+          const z2 =
+            p.y * sinX +
+            z1 * cosX;
+
+          const x2 = x1;
+
+          // =========================
+          // DEPTH
+          // =========================
+
+          const distance = z2;
+
+          const scale =
+            (distance + 2) /
+            2.5;
+
+          const opacity =
+            (distance + 1.5) /
+            2.5;
+
+          const left =
+            x2 * radius;
+
+          const top =
+            y2 * radius;
+
+          const zIndex =
+            Math.round(
+              (distance + 2) *
+                100
+            );
+
+          item.style.transform =
+            `translate(-50%, -50%) ` +
+            `translate3d(${left}px, ${top}px, 0) ` +
+            `scale(${scale})`;
+
+          item.style.opacity =
+            opacity.toString();
+
+          item.style.zIndex =
+            zIndex.toString();
+        }
+      );
+
+      animationFrameId =
+        requestAnimationFrame(
+          updatePositions
+        );
+    };
+
+    // =========================
+    // EVENTS
+    // =========================
+
+    container.addEventListener(
+      'pointerdown',
+      handlePointerDown
+    );
+
+    container.addEventListener(
+      'pointermove',
+      handlePointerMove
+    );
+
+    container.addEventListener(
+      'pointerup',
+      handlePointerUp
+    );
+
+    container.addEventListener(
+      'pointercancel',
+      handlePointerUp
+    );
+
+    updatePositions();
+
+    return () => {
+      cancelAnimationFrame(
+        animationFrameId
+      );
+
+      container.removeEventListener(
+        'pointerdown',
+        handlePointerDown
+      );
+
+      container.removeEventListener(
+        'pointermove',
+        handlePointerMove
+      );
+
+      container.removeEventListener(
+        'pointerup',
+        handlePointerUp
+      );
+
+      container.removeEventListener(
+        'pointercancel',
+        handlePointerUp
+      );
+    };
+  }, [points, safeSkills]);
+
+  // =========================
+  // RENDER
+  // =========================
 
   return (
-    <div className="w-full h-full cyber-border rounded-lg bg-[#050508] p-6 cyber-grid">
-      <div className="scanline"></div>
-      
-      {/* Header with category filter */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 space-y-4 lg:space-y-0">
-        <div>
-          <h2 className="orbitron text-2xl text-[#A020F0] cyber-text-glow tracking-wider mb-2">
-            SKILL MATRIX v2.1
-          </h2>
-          <div className="jetbrains text-sm text-[#0FF4F8]">
-            Total Skills: <span className="text-[#00E0FF] cyber-text-glow">{filteredSkills.length}</span>
-            {selectedCategory !== 'All' && (
-              <span className="ml-4">
-                Category: <span className="text-[#00E0FF] cyber-text-glow">{selectedCategory}</span>
-              </span>
-            )}
+    <div className="fixed inset-0 h-screen w-screen bg-[#0a0a0f] cyber-grid p-4 md:p-6 z-[100] overflow-hidden flex flex-col">
+      <motion.div
+        className="w-full h-full max-w-7xl mx-auto flex flex-col gap-3 md:gap-4"
+        initial={{
+          opacity: 0,
+        }}
+        animate={{
+          opacity: 1,
+        }}
+        transition={{
+          duration: 0.5,
+        }}
+      >
+        {/* =========================
+            ХЕДЕР
+        ========================= */}
+
+        <div className="flex items-center justify-between shrink-0">
+          <button
+            onClick={onBack}
+            className="cyber-border rounded-lg px-4 py-2 jetbrains text-[#00E0FF] hover:bg-[#A020F0] hover:bg-opacity-20 transition-all duration-300"
+          >
+            {'< BACK TO TERMINAL'}
+          </button>
+
+          <h1 className="orbitron text-2xl md:text-4xl text-[#A020F0] cyber-text-glow tracking-wider text-center flex-1">
+            NEURAL SPHERE
+          </h1>
+
+          <div className="jetbrains text-[#0FF4F8] text-sm hidden md:block">
+            Status:{' '}
+            <span className="text-[#00ff41] cyber-flicker">
+              ACTIVE
+            </span>
           </div>
         </div>
 
-        {/* Category filter */}
-        <div className="flex items-center space-x-2">
-          <Filter className="w-4 h-4 text-[#A020F0]" />
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <motion.button
-                key={category}
-                className={`px-3 py-1 rounded jetbrains text-xs cyber-border transition-all duration-300 ${
-                  selectedCategory === category
-                    ? 'bg-[#A020F0] text-white cyber-glow'
-                    : 'bg-[#0a0a0f] text-[#0FF4F8] hover:bg-[#A020F0] hover:bg-opacity-20'
-                }`}
-                onClick={() => setSelectedCategory(category)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </div>
+        {/* =========================
+            ГЛАВНЫЙ КОНТЕЙНЕР
+        ========================= */}
 
-      {/* Skills grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-h-96 overflow-y-auto pr-2">
-        <AnimatePresence mode="popLayout">
-          {filteredSkills.map((skill, index) => {
-            const skillStatus = getSkillStatus(skill.level);
-            const isHovered = hoveredSkill === skill.name;
-            
-            return (
+        <div className="flex-1 w-full bg-[#050508] cyber-border rounded-lg relative overflow-hidden flex flex-col">
+          {/* =========================
+              INFO PANEL
+          ========================= */}
+
+          <div className="absolute top-6 right-6 z-[200] min-h-[100px] w-56 pointer-events-none hidden md:block">
+            {hoveredSkill && (
               <motion.div
-                key={skill.name}
-                layout
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: -20 }}
-                transition={{ 
-                  duration: 0.3, 
-                  delay: index * 0.05,
-                  layout: { duration: 0.3 }
+                initial={{
+                  opacity: 0,
+                  x: 20,
                 }}
-                className={`cyber-border rounded-lg bg-[#0a0a0f] p-4 cursor-pointer transition-all duration-300 ${
-                  isHovered ? 'cyber-glow' : ''
-                }`}
-                onMouseEnter={() => setHoveredSkill(skill.name)}
-                onMouseLeave={() => setHoveredSkill(null)}
-                whileHover={{ 
-                  scale: 1.02,
-                  boxShadow: `0 0 20px ${skill.color}60`
+                animate={{
+                  opacity: 1,
+                  x: 0,
                 }}
+                className="bg-[#0a0a0f]/90 border border-[#A020F0] p-4 rounded shadow-[0_0_15px_#A020F040] backdrop-blur-sm"
               >
-                {/* Skill header */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-2">
-                    <div style={{ color: skill.color }}>
-                      {getCategoryIcon(skill.category)}
-                    </div>
-                    <div>
-                      <h3 className="orbitron text-sm text-[#A020F0] cyber-text-glow">
-                        {skill.name}
-                      </h3>
-                      <div className="jetbrains text-xs text-[#0FF4F8]">
-                        {skill.category}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div 
-                      className="jetbrains text-sm cyber-text-glow"
-                      style={{ color: skill.color }}
-                    >
-                      {skill.level}%
-                    </div>
-                    <div 
-                      className="jetbrains text-xs"
-                      style={{ color: skillStatus.color }}
-                    >
-                      {skillStatus.status}
-                    </div>
-                  </div>
+                <div
+                  className="orbitron text-xl mb-1"
+                  style={{
+                    color:
+                      hoveredSkill.color,
+                    textShadow: `0 0 8px ${hoveredSkill.color}`,
+                  }}
+                >
+                  {hoveredSkill.name}
                 </div>
 
-                {/* Progress bar */}
-                <div className="space-y-2">
-                  <div className="cyber-border rounded-full bg-[#050508] h-2 overflow-hidden">
-                    <motion.div
-                      className="h-full relative"
-                      style={{ backgroundColor: skill.color }}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${skill.level}%` }}
-                      transition={{ 
-                        duration: 1, 
-                        delay: index * 0.1 + 0.3,
-                        ease: "easeOut" 
-                      }}
-                    >
-                      {/* Glow effect */}
-                      <div 
-                        className="absolute inset-0"
-                        style={{
-                          background: `linear-gradient(90deg, transparent, ${skill.color}, transparent)`,
-                          filter: 'blur(2px)',
-                          opacity: 0.6
-                        }}
-                      />
-                      {/* Scanning line */}
-                      <motion.div
-                        className="absolute top-0 right-0 w-1 h-full bg-white opacity-80"
-                        animate={{ opacity: [0.8, 0.3, 0.8] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                    </motion.div>
-                  </div>
-                  
-                  {/* Additional skill info on hover */}
-                  <AnimatePresence>
-                    {isHovered && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="pt-2 border-t border-[#A020F0] border-opacity-30"
-                      >
-                        <div className="grid grid-cols-2 gap-2 jetbrains text-xs">
-                          <div>
-                            <span className="text-[#0FF4F8]">Experience:</span>
-                            <div className="text-[#00E0FF]">
-                              {skill.level >= 90 ? '3+ years' : 
-                               skill.level >= 80 ? '2+ years' : 
-                               skill.level >= 70 ? '1+ year' : '< 1 year'}
-                            </div>
-                          </div>
-                          <div>
-                            <span className="text-[#0FF4F8]">Usage:</span>
-                            <div className="text-[#00E0FF]">
-                              {skill.level >= 90 ? 'Daily' : 
-                               skill.level >= 80 ? 'Regular' : 
-                               skill.level >= 70 ? 'Often' : 'Sometimes'}
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                <div className="jetbrains text-sm text-[#0FF4F8] mb-3">
+                  {hoveredSkill.category}
+                </div>
+
+                <div className="w-full bg-[#050508] h-2 rounded-full overflow-hidden">
+                  <div
+                    className="h-full transition-all duration-300"
+                    style={{
+                      width: `${hoveredSkill.level}%`,
+                      backgroundColor:
+                        hoveredSkill.color,
+                    }}
+                  />
+                </div>
+
+                <div className="jetbrains text-xs text-right mt-2 text-[#00E0FF]">
+                  Proficiency:{' '}
+                  {hoveredSkill.level}%
                 </div>
               </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
+            )}
+          </div>
 
-      {/* Statistics summary */}
-      <div className="mt-6 pt-4 border-t border-[#A020F0] border-opacity-30">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center">
-            <div className="orbitron text-lg text-[#00ff41] cyber-text-glow">
-              {skills.filter(s => s.level >= 90).length}
-            </div>
-            <div className="jetbrains text-xs text-[#0FF4F8]">Expert</div>
+          {/* =========================
+              VIEWPORT СФЕРЫ
+          ========================= */}
+
+          <div
+            ref={containerRef}
+            className="flex-1 w-full relative cursor-grab active:cursor-grabbing overflow-hidden touch-none select-none"
+            style={{
+              perspective: '1200px',
+            }}
+          >
+            {/* МОЛНИИ */}
+
+            <EnergyCore />
+
+            {/* =========================
+                ЭЛЕМЕНТЫ СФЕРЫ
+            ========================= */}
+
+            {safeSkills.map((skill) => {
+              const Icon =
+                getIconForCategory(
+                  skill.category
+                );
+
+              const isHovered =
+                hoveredSkill?.name ===
+                skill.name;
+
+              return (
+                <div
+                  key={skill.name}
+                  ref={(el) =>
+                    setNodeRef(
+                      skill.name,
+                      el
+                    )
+                  }
+                  className={`
+                    absolute
+                    left-1/2
+                    top-1/2
+                    flex
+                    items-center
+                    gap-2
+                    px-3
+                    py-1.5
+                    rounded-full
+                    transition-colors
+                    duration-200
+                    pointer-events-auto
+                    cursor-pointer
+                    select-none
+                    ${
+                      isHovered
+                        ? 'bg-[#1a1a24] border border-[#A020F0]'
+                        : ''
+                    }
+                  `}
+                  onMouseEnter={() =>
+                    setHoveredSkill(
+                      skill
+                    )
+                  }
+                  onMouseLeave={() =>
+                    setHoveredSkill(
+                      null
+                    )
+                  }
+                >
+                  <div
+                    style={{
+                      color:
+                        skill.color,
+                    }}
+                  >
+                    <Icon
+                      size={
+                        isHovered
+                          ? 26
+                          : 18
+                      }
+                    />
+                  </div>
+
+                  <span
+                    className={`
+                      jetbrains
+                      text-sm
+                      md:text-base
+                      whitespace-nowrap
+                      ${
+                        isHovered
+                          ? 'opacity-100 font-bold'
+                          : 'opacity-80'
+                      }
+                    `}
+                    style={{
+                      color: isHovered
+                        ? skill.color
+                        : '#00E0FF',
+
+                      textShadow:
+                        isHovered
+                          ? `0 0 10px ${skill.color}`
+                          : 'none',
+                    }}
+                  >
+                    {skill.name}
+                  </span>
+                </div>
+              );
+            })}
+
+            {/* =========================
+                ДЕКОРАТИВНЫЕ ОРБИТЫ
+            ========================= */}
+
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-[#0FF4F8] opacity-20 pointer-events-none" />
+
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border border-[#A020F0] opacity-20 pointer-events-none" />
           </div>
-          <div className="text-center">
-            <div className="orbitron text-lg text-[#00E0FF] cyber-text-glow">
-              {skills.filter(s => s.level >= 80 && s.level < 90).length}
+
+          {/* =========================
+              ФУТЕР
+          ========================= */}
+
+          <div className="p-3 md:p-4 border-t border-[#A020F0]/20 flex justify-between items-center jetbrains text-xs text-[#0FF4F8] opacity-70 bg-[#050508] shrink-0 z-[200]">
+            <div>
+              Sphere Engine v4.7
             </div>
-            <div className="jetbrains text-xs text-[#0FF4F8]">Advanced</div>
-          </div>
-          <div className="text-center">
-            <div className="orbitron text-lg text-[#0FF4F8] cyber-text-glow">
-              {skills.filter(s => s.level >= 70 && s.level < 80).length}
+
+            <div>
+              Total Nodes:{' '}
+              {safeSkills.length}
             </div>
-            <div className="jetbrains text-xs text-[#0FF4F8]">Proficient</div>
-          </div>
-          <div className="text-center">
-            <div className="orbitron text-lg text-[#A020F0] cyber-text-glow">
-              {Math.round(skills.reduce((acc, skill) => acc + skill.level, 0) / skills.length)}%
-            </div>
-            <div className="jetbrains text-xs text-[#0FF4F8]">Average</div>
           </div>
         </div>
-      </div>
-
-      {/* System info footer */}
-      <div className="mt-4 pt-3 border-t border-[#A020F0] border-opacity-20 flex justify-between items-center jetbrains text-xs text-[#0FF4F8] opacity-70">
-        <div>Matrix Version: 2.1.0</div>
-        <div>Last Updated: 2024</div>
-        <div className="text-[#00ff41] cyber-flicker">● SYSTEM ONLINE</div>
-      </div>
+      </motion.div>
     </div>
   );
 };

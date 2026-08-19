@@ -15,6 +15,7 @@ import {
   Terminal,
   Layers
 } from 'lucide-react';
+import Landing from '../assets/landing.jpg';
 
 interface ProjectsScreenProps {
   onBack: () => void;
@@ -44,23 +45,23 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
   const projects: Project[] = [
     {
       id: 1,
-      title: 'Stellar Burger',
-      description: 'Интерактивный конструктор космических бургеров с drag-and-drop интерфейсом',
-      detailedDescription: 'Полнофункциональное React приложение для создания и заказа космических бургеров. Реализован современный UI/UX с использованием Redux для управления состоянием, React DnD для интерактивного перетаскивания ингредиентов.',
-      tech: ['React', 'Redux Toolkit', 'TypeScript', 'React DnD', 'WebSocket', 'Jest'],
-      github: 'https://github.com/LlNNORM/stellar-burger',
-      demo: 'https://stellar-burger-demo.vercel.app',
-      stars: 47,
-      views: 312,
-      status: 'Production',
-      category: 'Web Application',
+      title: 'Закрывающий тег',
+      description: 'Рефлексивный дневник-тренажёр для начинающих веб-разработчиков, посвящённый эмоциональным и психологическим этапам обучения вёрстке. Проект предлагает пользователю пройти по ключевым точкам курса (спринтам) и оставить свои воспоминания о каждом из них.',
+      detailedDescription: 'Сайт структурирован как хроника обучения вёрстке, разбитая на тематические блоки — от «нулевого спринта» (подготовка и настрой) до финальной точки «Сейчас я здесь». Каждый раздел описывает типичные состояния новичка: страх перед чистым листом, сомнения после первого проекта, погоню за идеалом, поддержку окружающих, поиск обходных решений и моменты, когда опускаются руки. В конце каждого блока находится приглашение «Место для ваших воспоминаний о начале обучения», превращающее страницу в интерактивный журнал личного опыта. Завершает сайт философское размышление о том, что вёрстка — это постоянно меняющийся мир, где важен сам процесс познания',
+      tech: ['HTML', 'CSS', 'JavaScript',],
+      github: 'https://github.com/LlNNORM/zakrivayuschiy-teg-f',
+      demo: 'https://llnnorm.github.io/zakrivayuschiy-teg-f/',
+      stars: 0,
+      views: 0,
+      status: 'Complete',
+      category: 'Landing',
       year: '2024',
       features: [
-        'Drag & Drop конструктор бургеров',
-        'Авторизация и регистрация пользователей',
-        'История заказов в реальном времени',
-        'Адаптивный дизайн для всех устройств',
-        'Интеграция с API для заказов'
+        'Тематическая навигация по спринтам — от подготовки до текущего момента',
+        'Рефлексивные триггеры — описание типичных эмоций и состояний, знакомых каждому ученику',
+        'Интерактивные поля — места для личных записей и воспоминаний в каждом разделе',
+        'Мотивационный нарратив — поддержка и нормализация трудностей, возникающих в процессе обучения',
+        'Философское завершение — напоминание о ценности самого пути, а не только результата'
       ],
       primaryColor: '#FF6B35'
     },
@@ -132,12 +133,12 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
     },
     {
       id: 5,
-      title: 'Neural Code Assistant',
+      title: 'Multuverse Window',
       description: 'AI-помощник для анализа и оптимизации кода',
       detailedDescription: 'Интеллектуальный инструмент для анализа кода с использованием машинного обучения. Предоставляет рекомендации по оптимизации, находит потенциальные баги.',
       tech: ['Python', 'TensorFlow', 'React', 'Flask', 'Docker', 'OpenAI API'],
-      github: 'https://github.com/LlNNORM/neural-code-assistant',
-      demo: 'https://neural-code-assistant.vercel.app',
+      github: 'https://github.com/LlNNORM/posmotri_v_okno',
+      demo: 'https://llnnorm.github.io/posmotri_v_okno/',
       stars: 156,
       views: 892,
       status: 'Development',
@@ -158,12 +159,12 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
       description: 'Система мониторинга и анализа блокчейн транзакций',
       detailedDescription: 'Комплексная система для отслеживания и анализа блокчейн транзакций в реальном времени. Поддерживает множественные сети и предоставляет детальную аналитику.',
       tech: ['Svelte', 'Web3.js', 'Node.js', 'GraphQL', 'PostgreSQL', 'Docker'],
-      github: 'https://github.com/LlNNORM/blockchain-tracker',
-      demo: 'https://blockchain-tracker-demo.vercel.app',
+      github: 'https://github.com/LlNNORM/ono-tebe-nado',
+      demo: 'https://llnnorm.github.io/ono-tebe-nado',
       stars: 73,
       views: 445,
-      status: 'Beta',
-      category: 'Blockchain',
+      status: 'Complete',
+      category: 'Landing',
       year: '2024',
       features: [
         'Мониторинг множественных блокчейн сетей',
@@ -192,21 +193,57 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
     }
   };
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Web Application': return <Globe className="w-4 h-4" />;
-      case 'Social Platform': return <Users className="w-4 h-4" />;
-      case 'Gallery': return <Palette className="w-4 h-4" />;
-      case 'Analytics': return <Zap className="w-4 h-4" />;
-      case 'AI Tools': return <Terminal className="w-4 h-4" />;
-      case 'Blockchain': return <Layers className="w-4 h-4" />;
-      default: return <Code className="w-4 h-4" />;
-    }
-  };
+  // const getCategoryIcon = (category: string) => {
+  //   switch (category) {
+  //     case 'Web Application': return <Globe className="w-4 h-4" />;
+  //     case 'Social Platform': return <Users className="w-4 h-4" />;
+  //     case 'Gallery': return <Palette className="w-4 h-4" />;
+  //     case 'Analytics': return <Zap className="w-4 h-4" />;
+  //     case 'AI Tools': return <Terminal className="w-4 h-4" />;
+  //     case 'Blockchain': return <Layers className="w-4 h-4" />;
+  //     default: return <Code className="w-4 h-4" />;
+  //   }
+  // };
+  const categoryIcons: Record<string, { background: React.ReactNode; label: React.ReactNode }> = {
+  'Web Application': {
+    background: <Globe size={64} />,   // крупная иконка для фона
+    label: <Globe size={16} />,        // маленькая для метки
+  },
+  'Social Platform': {
+    background: <Users size={64} />,
+    label: <Users size={16} />,
+  },
+  'Gallery': {
+    background: <Palette size={64} />,
+    label: <Palette size={16} />,
+  },
+  'Analytics': {
+    background: <Zap size={64} />,
+    label: <Zap size={16} />,
+  },
+  'AI Tools': {
+    background: <Terminal size={64} />,
+    label: <Terminal size={16} />,
+  },
+  'Blockchain': {
+    background: <Layers size={64} />,
+    label: <Layers size={16} />,
+  },
+  // для категории 'All' или дефолтной
+  default: {
+    background: <img className="cyber-border rounded-lg" src={Landing} alt="Category icon" />,
+    label: <Code size={16} />,
+  }
+};
+
+const getCategoryIcon = (category: string, type: 'background' | 'label') => {
+  const icons = categoryIcons[category] || categoryIcons.default;
+  return icons[type];
+};
 
   return (
     <div className="fixed inset-0 bg-[#0a0a0f] p-4 md:p-8 flex flex-col min-h-screen">
-      <div className="scanline"></div>
+      {/* <div className="scanline"></div> */}
       
       <motion.div 
         className="max-w-7xl mx-auto h-full flex flex-col"
@@ -221,17 +258,15 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <div className="flex items-center space-x-4">
             <button
               onClick={onBack}
               className="cyber-border rounded-lg px-4 py-2 jetbrains text-[#00E0FF] hover:bg-[#A020F0] hover:bg-opacity-20 transition-all duration-300"
             >
-              {'< BACK'}
+              {'< BACK TO TERMINAL'}
             </button>
             <h1 className="orbitron text-2xl md:text-4xl text-[#A020F0] cyber-text-glow tracking-wider">
               PROJECT ARCHIVE
             </h1>
-          </div>
 
           {/* Filter */}
           <div className="flex items-center space-x-4">
@@ -277,10 +312,10 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
                 >
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                     <div 
-                      className="text-6xl opacity-50"
+                      className="text-6xl opacity-100"
                       style={{ color: project.primaryColor }}
                     >
-                      {getCategoryIcon(project.category)}
+                      {getCategoryIcon(project.category, 'background')}
                     </div>
                   </div>
                   
@@ -293,9 +328,9 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
                     </div>
                   </div>
                   
-                  <div className="absolute bottom-4 left-4 right-4">
+                  <div className="absolute bottom-2 left-4 right-2 bg-black/50">
                     <div className="flex items-center space-x-2 mb-2">
-                      {getCategoryIcon(project.category)}
+                      {getCategoryIcon(project.category, 'label')}
                       <span className="text-xs jetbrains text-[#0FF4F8]">
                         {project.category}
                       </span>

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, MessageCircle, Mail, MapPin, Calendar } from 'lucide-react';
-
+import { useLanguage } from './LanguageContext';
+import FloatingElement from './FloatingElement';
 interface ContactsScreenProps {
   onBack: () => void;
 }
 
 const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
   const [hoveredContact, setHoveredContact] = useState<string | null>(null);
-
+  const { t } = useLanguage();
   const contacts = [
     {
       id: 'github',
@@ -17,38 +18,38 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
       url: 'https://github.com/LlNNORM',
       icon: Github,
       color: '#A020F0',
-      description: 'Open source contributions'
+      description: t("contacts.github.description")
     },
     {
       id: 'linkedin',
       name: 'LinkedIn',
       value: 'Linnorm Dev',
-      url: '#',
+      url: 'https://www.linkedin.com/in/ivan-ershov-898b02217/',
       icon: Linkedin,
       color: '#00E0FF',
-      description: 'Professional network'
+      description: t("contacts.linkedin.description")
     },
     {
       id: 'telegram',
       name: 'Telegram',
-      value: '@linnorm_dev',
-      url: '#',
+      value: '@LINN0RM',
+      url: 'https://t.me/LINN0RM',
       icon: MessageCircle,
       color: '#0FF4F8',
-      description: 'Direct messaging'
+      description: t("contacts.telegram.description")
     },
     {
       id: 'email',
       name: 'Email',
       value: 'dev@linnorm.cyber',
-      url: 'mailto:dev@linnorm.cyber',
+      url: 'mailto:linnorm@ya.ru',
       icon: Mail,
       color: '#A020F0',
-      description: 'Professional inquiries'
+      description: t("contacts.email.description")
     }
   ];
 
-  const floatingElements = Array.from({ length: 12 }, (_, i) => ({
+  const floatingElements = Array.from({ length: 30 }, (_, i) => ({
     id: i,
     symbol: ['◆', '◇', '▲', '△', '●', '○', '■', '□'][i % 8],
     x: Math.random() * 100,
@@ -58,8 +59,8 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
   }));
 
   return (
-    <div className="fixed inset-0 bg-[#0a0a0f] cyber-grid p-4 md:p-8">
-      <div className="scanline"></div>
+    <div className=" bg-[#0a0a0f] cyber-grid p-4 md:p-8">
+      {/* <div className="scanline"></div> */}
       
       {/* Floating Elements */}
       {floatingElements.map((element) => (
@@ -69,7 +70,7 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
           style={{ left: `${element.x}%`, top: `${element.y}%` }}
           animate={{
             y: [0, -50, 0],
-            opacity: [0.2, 0.4, 0.2],
+            opacity: [0.3, 0.6, 0.3],
             rotate: [0, 180, 360]
           }}
           transition={{
@@ -100,14 +101,14 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
             onClick={onBack}
             className="cyber-border rounded-lg px-4 py-2 jetbrains text-[#00E0FF] hover:bg-[#A020F0] hover:bg-opacity-20 transition-all duration-300"
           >
-            {'< BACK'}
+            {t('contacts.back')}
           </button>
           <h1 className="orbitron text-2xl md:text-4xl text-[#A020F0] cyber-text-glow tracking-wider">
-            NEURAL INTERFACE
+            {t('contacts.title')}
           </h1>
           <div className="jetbrains text-[#0FF4F8] text-sm">
             <Calendar size={16} className="inline mr-1" />
-            Available 24/7
+            {t('contacts.available')}
           </div>
         </motion.div>
 
@@ -122,7 +123,7 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
             {/* QR Code Card */}
             <div className="cyber-border rounded-lg bg-[#050508] p-8 text-center">
               <h2 className="orbitron text-xl text-[#A020F0] cyber-text-glow mb-6 tracking-wider">
-                QUICK ACCESS
+                {t('contacts.quick_access')}
               </h2>
               
               {/* QR Code */}
@@ -139,7 +140,7 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
               </div>
               
               <p className="jetbrains text-[#00E0FF] text-sm">
-                Scan to access GitHub profile
+                {t('contacts.scan_github')}
               </p>
               <p className="jetbrains text-[#0FF4F8] text-xs mt-2">
                 github.com/LlNNORM
@@ -149,20 +150,20 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
             {/* Location & Availability */}
             <div className="cyber-border rounded-lg bg-[#050508] p-6">
               <h3 className="orbitron text-lg text-[#A020F0] cyber-text-glow mb-4 tracking-wider">
-                LOCATION & STATUS
+                {t('contacts.location_status')}
               </h3>
               <div className="space-y-3 jetbrains">
                 <div className="flex items-center space-x-3">
                   <MapPin size={16} className="text-[#0FF4F8]" />
-                  <span className="text-[#00E0FF]">Remote • Global</span>
+                  <span className="text-[#00E0FF]">{t('contacts.location')}</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-[#00ff41] rounded-full cyber-flicker"></div>
-                  <span className="text-[#00E0FF]">Available for projects</span>
+                  <span className="text-[#00E0FF]">{t('contacts.available_projects')}</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-3 h-3 bg-[#00E0FF] rounded-full"></div>
-                  <span className="text-[#00E0FF]">Response time: ~2 hours</span>
+                  <span className="text-[#00E0FF]">{t('contacts.response_time')}</span>
                 </div>
               </div>
             </div>
@@ -176,7 +177,7 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <h2 className="orbitron text-xl text-[#A020F0] cyber-text-glow mb-6 tracking-wider">
-              COMMUNICATION CHANNELS
+              {t('contacts.channels')}
             </h2>
             
             {contacts.map((contact, index) => {
