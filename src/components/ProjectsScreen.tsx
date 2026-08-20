@@ -5,8 +5,7 @@ import {
   Github, 
   Star, 
   Eye, 
-  Filter, 
-  Calendar,
+  Filter,
   Users,
   Code,
   Globe,
@@ -231,7 +230,7 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
   },
   // для категории 'All' или дефолтной
   default: {
-    background: <img className="cyber-border rounded-lg" src={Landing} alt="Category icon" />,
+    background: <Code size={64} />,
     label: <Code size={16} />,
   }
 };
@@ -242,8 +241,7 @@ const getCategoryIcon = (category: string, type: 'background' | 'label') => {
 };
 
   return (
-    <div className="fixed inset-0 bg-[#0a0a0f] p-4 md:p-8 flex flex-col min-h-screen">
-      {/* <div className="scanline"></div> */}
+    <div className=" bg-[#0a0a0f] p-4 md:p-8 flex flex-col h-screen overflow-y-auto overflow-x-hidden cyber-scroll">
       
       <motion.div 
         className="max-w-7xl mx-auto h-full flex flex-col"

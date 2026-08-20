@@ -1077,9 +1077,9 @@ const SkillsSphere: React.FC<
                 ДЕКОРАТИВНЫЕ ОРБИТЫ
             ========================= */}
 
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-[#0FF4F8] opacity-20 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-[#0FF4F8] opacity-40 pointer-events-none" />
 
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border border-[#A020F0] opacity-20 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border border-[#A020F0] opacity-40 pointer-events-none" />
           </div>
 
           {/* =========================

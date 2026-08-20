@@ -562,7 +562,8 @@ const interfaceRef =
         flex
         h-screen
         flex-col
-        overflow-hidden
+        cyber-scroll
+        overflow-y-auto
       "
     >
       {/* ====================================================
@@ -1057,7 +1058,7 @@ const interfaceRef =
           ================================================== */}
 
           <div className="      
-                  command-reference-scroll
+                  cyber-scroll
                   overflow-y-auto
                   pr-2
                   flex-1

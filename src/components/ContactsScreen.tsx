@@ -52,10 +52,10 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
 
 
   return (
-    <div className=" bg-[#0a0a0f] cyber-grid p-4 md:p-8">
+    <div className="h-screen w-full bg-[#0a0a0f] cyber-grid p-4 md:p-8 relative overflow-y-auto overflow-x-hidden cyber-scroll">
       {/* Floating Elements */}
       <FloatingBackground/>
-      
+
       <motion.div 
         className="max-w-6xl mx-auto h-full flex flex-col relative z-10"
         initial={{ opacity: 0 }}

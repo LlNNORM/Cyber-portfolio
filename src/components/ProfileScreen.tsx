@@ -51,8 +51,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className="fixed inset-0 bg-[#0a0a0f] cyber-grid p-4 md:p-8 " >
-      {/* <div className="scanline"></div> */}
+    <div className="h-screen w-full  bg-[#0a0a0f] cyber-grid p-4 md:p-8 overflow-y-auto overflow-x-hidden cyber-scroll" >
       
       <motion.div 
         className="max-w-7xl mx-auto h-full flex flex-col"
@@ -81,7 +80,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack }) => {
           </div>
         </motion.div>
 
-        <div className="flex-1 grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {/* Left Column - Avatar & Stats */}
           <img className="cyber-border rounded-lg" src={profileImg} alt="Profile" />
 
