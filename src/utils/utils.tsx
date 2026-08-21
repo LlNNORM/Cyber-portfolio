@@ -1,5 +1,5 @@
 import { Globe, Users, Palette, Zap, Terminal, Layers, Code } from 'lucide-react';
-import type { ProjectCategory, ProjectStatus } from '../components/types';
+import type { ProjectCategory, ProjectStatus } from '../data/projects';
 
 // 🎨 Цвета статусов
 const statusColors: Record<ProjectStatus, string> = {

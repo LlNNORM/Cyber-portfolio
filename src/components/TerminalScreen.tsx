@@ -999,7 +999,6 @@ const interfaceRef =
         {/* ====================================================
             COMMAND REFERENCE
         ==================================================== */}
-
         <motion.div
             className="
             w-80
@@ -1008,7 +1007,7 @@ const interfaceRef =
             cyber-border
             rounded-lg
             bg-[#050508]/95
-            p-4
+            p-1
             hidden
             md:flex
             flex-col
@@ -1060,7 +1059,8 @@ const interfaceRef =
           <div className="      
                   cyber-scroll
                   overflow-y-auto
-                  pr-2
+                  px-4 
+                  py-2
                   flex-1
                   min-h-0">
             {categories.map(
@@ -1072,41 +1072,17 @@ const interfaceRef =
                       category
                   );
 
-                if (
-                  categoryCommands.length ===
-                  0
-                ) {
-                  return null;
-                }
+                if (categoryCommands.length === 0) return null;
+
+                const catColor = getCategoryColor(category);
 
                 return (
-                  <div
-                    key={category}
-                    className="space-y-2 mb-4"
-                  >
-                    {/* ----------------------------------------
-                        CATEGORY TITLE
-                    ---------------------------------------- */}
-
+                  <div key={category} className="space-y-2 mb-4">
                     <h4
-                      className="
-                        jetbrains
-                        text-sm
-                        uppercase
-                        tracking-wider
-                        border-b
-                        border-opacity-30
-                        pb-1
-                      "
+                      className="jetbrains text-sm uppercase tracking-wider border-b border-opacity-30 pb-1"
                       style={{
-                        color:
-                          getCategoryColor(
-                            category
-                          ),
-                        borderColor:
-                          getCategoryColor(
-                            category
-                          ),
+                        color: catColor,
+                        borderColor: catColor,
                       }}
                     >
                       {category}
@@ -1115,86 +1091,95 @@ const interfaceRef =
                     {/* ----------------------------------------
                         COMMANDS
                     ---------------------------------------- */}
-
-                    {categoryCommands.map(
-                      (command) => (
-                        <button
-                          type="button"
-                          key={
-                            command.name
-                          }
-                          onClick={() =>
-                            handleCommand(
-                              command.name
-                            )
-                          }
-                          className="
-                            w-full
-                            text-left
-                            p-2
-                            rounded
-                            cyber-border
-                            bg-[#0a0a0f]
-                            hover:bg-[#A020F0]/10
-                            transition-all
-                            duration-200
-                          "
-                        >
-                          <div
-                            className="
-                              flex
-                              items-center
-                              space-x-2
-                              mb-1
-                            "
-                          >
-                            <div
-                              style={{
-                                color:
-                                  getCategoryColor(
-                                    category
-                                  ),
-                              }}
-                            >
-                              {
-                                command.icon
+                  {categoryCommands.map((command) => (
+                    <motion.button
+                      type="button"
+                      key={command.name}
+                      onClick={() => handleCommand(command.name)}
+                      initial="rest"
+                      whileHover="hover"
+                      animate="rest"
+                      variants={{
+                        rest: { 
+                          scale: 1, 
+                          boxShadow: `0px 0px 0px transparent` 
+                        },
+                        hover: { 
+                          scale: 1.04, 
+                          boxShadow: `0px 0px 12px ${catColor}`, 
+                          transition: { duration: 0.25, ease: "easeOut" }
+                        }
+                      }}
+                      className="
+                        relative
+                        overflow-hidden
+                        w-full
+                        text-left
+                        p-2
+                        rounded
+                        cyber-border
+                        bg-[#0a0a0f]
+                        transition-colors
+                      "
+                    >
+                      {/* КОНТЕЙНЕР УГЛА НАКЛОНА */}
+                      <div 
+                        className="pointer-events-none absolute"
+                        style={{
+                          top: "-50%",
+                          left: "-50%",
+                          width: "200%",
+                          height: "200%",
+                          transform: "rotate(-45deg)"
+                        }}
+                      >
+                        {/* 
+                          ГОЛОГРАФИЧЕСКИЙ БЛИК 
+                          Движение в обе стороны и уменьшенная скорость
+                        */}
+                       <motion.div
+                          className="w-full h-full"
+                          style={{
+                            background: `linear-gradient(180deg, transparent 0%, ${catColor} 45%, transparent 90%)`,
+                          }}
+                          variants={{
+                            rest: { 
+                              y: "-120%", 
+                              opacity: 0,
+                              transition: { 
+                                opacity: { duration: 0.2 }, // Быстро гасим свечение
+                                y: { duration: 0 }          // Сбрасываем позицию в начало мгновенно, БЕЗ обратного движения
                               }
-                            </div>
-
-                            <span
-                              className="
-                                jetbrains
-                                text-sm
-                              "
-                              style={{
-                                color:
-                                  getCategoryColor(
-                                    category
-                                  ),
-                              }}
-                            >
-                              {
-                                command.name
-                              }
-                            </span>
-                          </div>
-
-                          <div
-                            className="
-                              jetbrains
-                              text-xs
-                              text-[#0FF4F8]
-                              opacity-70
-                              pl-6
-                            "
-                          >
-                            {
-                              command.description
+                            },
+                            hover: { 
+                              y: "120%", 
+                              opacity: 0.5,
+                              transition: { duration: 0.9, ease: "easeInOut" }
                             }
+                          }}
+                        />
+                      </div>
+
+                      {/* КОНТЕНТ КНОПКИ */}
+                      <div className="relative z-10">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <div style={{ color: catColor }}>
+                            {command.icon}
                           </div>
-                        </button>
-                      )
-                    )}
+                          <span
+                            className="jetbrains text-sm"
+                            style={{ color: catColor }}
+                          >
+                            {command.name}
+                          </span>
+                        </div>
+
+                        <div className="jetbrains text-xs text-[#0FF4F8] opacity-70 pl-6">
+                          {command.description}
+                        </div>
+                      </div>
+                    </motion.button>
+                  ))}
                   </div>
                 );
               }
