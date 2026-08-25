@@ -6,7 +6,7 @@ import TerminalScreen from './components/TerminalScreen';
 import ProfileScreen from './components/ProfileScreen';
 import ProjectsScreen from './components/ProjectsScreen';
 import ContactsScreen from './components/ContactsScreen';
-import SkillsSphere from './components/SkillsScreen';
+import SkillsScreen from './components/SkillsScreen';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { LanguageProvider } from './components/LanguageContext';
 
@@ -165,7 +165,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <SkillsSphere onBack={() => handleScreenChange('terminal')}  skills={ skills} />
+              <SkillsScreen onBack={() => handleScreenChange('terminal')}  skills={ skills} />
             </motion.div>
           )}
 

@@ -24,3 +24,10 @@ export type ProjectCategory =
   | 'Blockchain';
 
 export type ProjectStatus = 'Production' | 'Beta' | 'Complete' | 'Development';
+
+export interface Skill {
+  name: string;
+  level: number;
+  color: string;
+  category: string;
+}

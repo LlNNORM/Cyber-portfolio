@@ -1,31 +1,10 @@
-
-  // const skills = [
-  //   { name: 'JavaScript', level: 90, color: '#FFD700', category: 'Programming' },
-  //   { name: 'TypeScript', level: 85, color: '#00E0FF', category: 'Programming' },
-  //   { name: 'React', level: 95, color: '#0FF4F8', category: 'Frontend' },
-  //   { name: 'Redux', level: 80, color: '#A020F0', category: 'State Management' },
-  //   { name: 'REST API', level: 88, color: '#00ff41', category: 'Backend' },
-  //   { name: 'Git', level: 92, color: '#FF6B35', category: 'DevOps' },
-  //   { name: 'CSS/SCSS', level: 87, color: '#FF3366', category: 'Styling' },
-  //   { name: 'Node.js', level: 83, color: '#00D9FF', category: 'Backend' },
-  //   { name: 'MongoDB', level: 75, color: '#A020F0', category: 'Database' },
-  //   { name: 'Webpack', level: 78, color: '#0FF4F8', category: 'Build Tools' },
-  //   { name: 'Jest', level: 82, color: '#00ff41', category: 'Testing' },
-  //   { name: 'Docker', level: 70, color: '#00E0FF', category: 'DevOps' },
-  //   { name: 'Three.js', level: 73, color: '#FFD700', category: '3D Graphics' },
-  //   { name: 'GraphQL', level: 76, color: '#FF6B35', category: 'API' },
-  //   { name: 'Next.js', level: 85, color: '#FF3366', category: 'Framework' },
-  //   { name: 'Tailwind', level: 90, color: '#00D9FF', category: 'Styling' },
-  //   { name: 'Framer Motion', level: 84, color: '#A020F0', category: 'Animation' },
-  //   { name: 'WebSocket', level: 79, color: '#0FF4F8', category: 'Real-time' }
-  // ];
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import Logo from '../assets/dragon-logo.svg?react';
 import profileImg from '../assets/profile.webp';
 import profileImg3 from '../assets/profile3.webp';
 import { useLanguage } from './LanguageContext';
+import { ScreenHeader } from './ScreenHeader';
 
 interface ProfileScreenProps {
   onBack: () => void;
@@ -60,25 +39,19 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack }) => {
         transition={{ duration: 0.8 }}
       >
         {/* Header */}
-        <motion.div 
-          className="flex items-center justify-between mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <button
-            onClick={onBack}
-            className="cyber-border rounded-lg px-4 py-2 jetbrains text-[#00E0FF] hover:bg-[#A020F0] hover:bg-opacity-20 transition-all duration-300"
-          >
-            {t("profile.back")}
-          </button>
-          <h1 className="orbitron text-2xl md:text-4xl text-[#A020F0] cyber-text-glow tracking-wider">
-            {t("profile.title")}
-          </h1>
-          <div className="jetbrains text-[#0FF4F8] text-sm">
-            {t("profile.status")}: <span className="text-[#00ff41] cyber-flicker">{t("profile.online")}</span>
-          </div>
-        </motion.div>
+        <ScreenHeader
+          onBack={onBack}
+          backText={t('profile.back')}
+          title={t('profile.title')}
+          rightElement={
+            <div className="jetbrains text-[#0FF4F8] text-sm">
+              {t('profile.status')}:{' '}
+              <span className="text-[#00ff41] cyber-flicker">
+                {t('profile.online')}
+              </span>
+            </div>
+          }
+        />
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {/* Left Column - Avatar & Stats */}

@@ -1,5 +1,5 @@
 import { Globe, Users, Palette, Zap, Terminal, Layers, Code } from 'lucide-react';
-import type { ProjectCategory, ProjectStatus } from '../data/projects';
+import type { ProjectCategory, ProjectStatus } from '../types/projects';
 
 // 🎨 Цвета статусов
 const statusColors: Record<ProjectStatus, string> = {
@@ -19,7 +19,9 @@ const categoryIcons: Record<ProjectCategory, React.ElementType> = {
   Gallery: Palette,
   Analytics: Zap,
   'AI Tools': Terminal,
-  Blockchain: Layers
+  Blockchain: Layers,
+  Landing: Code,
+  All: Code
 };
 
 export const getCategoryIcon = (

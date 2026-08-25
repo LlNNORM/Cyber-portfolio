@@ -1,125 +1,134 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Github, Linkedin, MessageCircle, Mail, MapPin, Calendar } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { QRCodeSVG } from 'qrcode.react';
+import { MapPin, Calendar, ExternalLink, Copy, Check } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import {FloatingBackground } from './FloatingElement';
+import { FloatingBackground } from './FloatingElement';
+import { ScreenHeader } from './ScreenHeader';
+import { CONTACTS_DATA,  } from '../data/contacts';
+import type { ContactItem } from '../types/contacts';
+
 interface ContactsScreenProps {
   onBack: () => void;
 }
 
 const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
-  const [hoveredContact, setHoveredContact] = useState<string | null>(null);
+  const [selectedContact, setSelectedContact] = useState<ContactItem>(CONTACTS_DATA[0]);
+  const [hoveredContact, setHoveredContact] = useState<ContactItem | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const { t } = useLanguage();
-  const contacts = [
-    {
-      id: 'github',
-      name: 'GitHub',
-      value: '@LlNNORM',
-      url: 'https://github.com/LlNNORM',
-      icon: Github,
-      color: '#A020F0',
-      description: t("contacts.github.description")
-    },
-    {
-      id: 'linkedin',
-      name: 'LinkedIn',
-      value: 'Linnorm Dev',
-      url: 'https://www.linkedin.com/in/ivan-ershov-898b02217/',
-      icon: Linkedin,
-      color: '#00E0FF',
-      description: t("contacts.linkedin.description")
-    },
-    {
-      id: 'telegram',
-      name: 'Telegram',
-      value: '@LINN0RM',
-      url: 'https://t.me/LINN0RM',
-      icon: MessageCircle,
-      color: '#0FF4F8',
-      description: t("contacts.telegram.description")
-    },
-    {
-      id: 'email',
-      name: 'Email',
-      value: 'dev@linnorm.cyber',
-      url: 'mailto:linnorm@ya.ru',
-      icon: Mail,
-      color: '#A020F0',
-      description: t("contacts.email.description")
-    }
-  ];
 
+  const activeQrContact = hoveredContact || selectedContact;
 
+  const handleCopy = (e: React.MouseEvent, id: string, textToCopy: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  };
 
   return (
-    <div className="h-screen w-full bg-[#0a0a0f] cyber-grid p-4 md:p-8 relative overflow-y-auto overflow-x-hidden cyber-scroll">
-      {/* Floating Elements */}
-      <FloatingBackground/>
+    <div className="min-h-screen w-full bg-[#0a0a0f] cyber-grid p-4 md:p-8 relative overflow-y-auto overflow-x-hidden cyber-scroll">
+      <FloatingBackground />
 
       <motion.div 
-        className="max-w-6xl mx-auto h-full flex flex-col relative z-10"
+        className="max-w-6xl mx-auto flex flex-col relative z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Header */}
-        <motion.div 
-          className="flex items-center justify-between mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <button
-            onClick={onBack}
-            className="cyber-border rounded-lg px-4 py-2 jetbrains text-[#00E0FF] hover:bg-[#A020F0] hover:bg-opacity-20 transition-all duration-300"
-          >
-            {t('contacts.back')}
-          </button>
-          <h1 className="orbitron text-2xl md:text-4xl text-[#A020F0] cyber-text-glow tracking-wider">
-            {t('contacts.title')}
-          </h1>
-          <div className="jetbrains text-[#0FF4F8] text-sm">
-            <Calendar size={16} className="inline mr-1" />
-            {t('contacts.available')}
-          </div>
-        </motion.div>
+        <ScreenHeader
+          onBack={onBack}
+          backText={t('contacts.back')}
+          title={t('contacts.title')}
+          rightElement={
+            <div className="jetbrains text-[#0FF4F8] text-sm flex items-center">
+              <Calendar size={16} className="mr-1" />
+              {t('contacts.available')}
+            </div>
+          }
+        />
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* QR Code & Info Section */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
+          {/* QR Code & Status Section */}
           <motion.div 
             className="space-y-6"
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
           >
-            {/* QR Code Card */}
-            <div className="cyber-border rounded-lg bg-[#050508] p-8 text-center">
-              <h2 className="orbitron text-xl text-[#A020F0] cyber-text-glow mb-6 tracking-wider">
-                {t('contacts.quick_access')}
+            {/* Dynamic QR Card */}
+            <div className="cyber-border rounded-lg bg-[#050508] p-8 text-center relative overflow-hidden">
+              <h2 className="orbitron text-xl text-[#A020F0] cyber-text-glow mb-6 tracking-wider flex items-center justify-center gap-2">
+                <span>{t('contacts.quick_access')}</span>
+                <span className="text-xs px-2 py-0.5 rounded bg-[#A020F0]/20 text-[#00E0FF] border border-[#A020F0]/40">
+                  {activeQrContact.name}
+                </span>
               </h2>
               
-              {/* QR Code */}
-              <div className="w-48 h-48 mx-auto cyber-border rounded-lg bg-[#0a0a0f] flex items-center justify-center mb-6 relative">
-                <div className="w-40 h-40 bg-white rounded grid grid-cols-8 gap-1 p-2">
-                  {Array.from({ length: 64 }, (_, i) => (
-                    <div
-                      key={i}
-                      className={`${Math.random() > 0.5 ? 'bg-black' : 'bg-white'} rounded-sm`}
+              {/* Dynamic QR Container with Scanner Effect */}
+              <div className="w-48 h-48 mx-auto cyber-border rounded-lg bg-white p-3 flex items-center justify-center mb-6 relative overflow-hidden shadow-[0_0_20px_rgba(160,32,240,0.3)]">
+                {/* QR Code Graphic */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeQrContact.id}
+                    initial={{ opacity: 0.3, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0.2, scale: 0.95 }}
+                    transition={{ duration: 0.25 }}
+                    className="w-full h-full flex items-center justify-center"
+                  >
+                    <QRCodeSVG 
+                      value={activeQrContact.qrValue}
+                      size={160}
+                      bgColor="#FFFFFF"
+                      fgColor="#050508"
+                      level="M"
+                      includeMargin={false}
                     />
-                  ))}
-                </div>
-                <div className="absolute inset-0 cyber-glow rounded-lg"></div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Grid Overlay */}
+                <div className="absolute inset-0 cyber-grid-overlay pointer-events-none" />
+
+                {/* Neon Laser Scan Line */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`scan-${activeQrContact.id}`}
+                    initial={{ top: "-15%", opacity: 0 }}
+                    animate={{ 
+                      top: ["-15%", "115%"],
+                      opacity: [0, 1, 1, 0]
+                    }}
+                    transition={{ 
+                      duration: 0.6,
+                      ease: "easeInOut",
+                      times: [0, 0.1, 0.9, 1]
+                    }}
+                    className="absolute left-0 right-0 h-8 cyber-scan-line pointer-events-none z-10"
+                  />
+                </AnimatePresence>
+
+                {/* Corner Accents */}
+                <div className="absolute top-1 left-1 w-2 h-2 border-t-2 border-l-2 border-[#A020F0]" />
+                <div className="absolute top-1 right-1 w-2 h-2 border-t-2 border-r-2 border-[#A020F0]" />
+                <div className="absolute bottom-1 left-1 w-2 h-2 border-b-2 border-l-2 border-[#A020F0]" />
+                <div className="absolute bottom-1 right-1 w-2 h-2 border-b-2 border-r-2 border-[#A020F0]" />
               </div>
               
-              <p className="jetbrains text-[#00E0FF] text-sm">
-                {t('contacts.scan_github')}
+              <p className="jetbrains text-[#00E0FF] text-sm h-5 transition-all">
+                {t(activeQrContact.qrLabelKey)}
               </p>
-              <p className="jetbrains text-[#0FF4F8] text-xs mt-2">
-                github.com/LlNNORM
+              <p className="jetbrains text-[#0FF4F8] text-xs mt-2 opacity-80 truncate max-w-xs mx-auto">
+                {activeQrContact.value}
               </p>
             </div>
 
-            {/* Location & Availability */}
+            {/* Location & Status Card */}
             <div className="cyber-border rounded-lg bg-[#050508] p-6">
               <h3 className="orbitron text-lg text-[#A020F0] cyber-text-glow mb-4 tracking-wider">
                 {t('contacts.location_status')}
@@ -141,63 +150,106 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
             </div>
           </motion.div>
 
-          {/* Contacts Grid */}
+          {/* Contacts List */}
           <motion.div 
             className="space-y-4"
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
           >
             <h2 className="orbitron text-xl text-[#A020F0] cyber-text-glow mb-6 tracking-wider">
               {t('contacts.channels')}
             </h2>
             
-            {contacts.map((contact, index) => {
+            {CONTACTS_DATA.map((contact, index) => {
               const Icon = contact.icon;
+              const isSelected = selectedContact.id === contact.id;
+              const isHovered = hoveredContact?.id === contact.id;
+              const isCopied = copiedId === contact.id;
+
               return (
                 <motion.a
                   key={contact.id}
                   href={contact.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`block cyber-border rounded-lg bg-[#050508] p-6 transition-all duration-300 cursor-pointer ${
-                    hoveredContact === contact.id ? 'cyber-glow scale-105' : 'hover:cyber-glow hover:scale-102'
-                  }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 + index * 0.1, duration: 0.4 }}
-                  onMouseEnter={() => setHoveredContact(contact.id)}
+                  onClick={() => setSelectedContact(contact)}
+                  onMouseEnter={() => setHoveredContact(contact)}
                   onMouseLeave={() => setHoveredContact(null)}
+                  className={`block cyber-border rounded-lg bg-[#050508] p-6 transition-all duration-300 cursor-pointer relative group ${
+                    isSelected ? 'border-[#00E0FF] bg-[#0a0a14] cyber-glow' : ''
+                  } ${isHovered && !isSelected ? 'cyber-glow scale-[1.01]' : ''}`}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.08, duration: 0.3 }}
                 >
                   <div className="flex items-center space-x-4">
+                    {/* Icon Container */}
                     <div 
-                      className="w-12 h-12 cyber-border rounded-lg flex items-center justify-center transition-all duration-300"
+                      className="w-12 h-12 cyber-border rounded-lg flex items-center justify-center transition-all duration-300 flex-shrink-0"
                       style={{ 
-                        backgroundColor: hoveredContact === contact.id ? contact.color + '20' : 'transparent',
-                        borderColor: hoveredContact === contact.id ? contact.color : ''
+                        backgroundColor: (isHovered || isSelected) ? `${contact.color}25` : 'transparent',
+                        borderColor: (isHovered || isSelected) ? contact.color : ''
                       }}
                     >
                       <Icon 
                         size={24} 
-                        style={{ color: hoveredContact === contact.id ? contact.color : '#00E0FF' }}
+                        style={{ color: (isHovered || isSelected) ? contact.color : '#00E0FF' }}
                         className="transition-colors duration-300"
                       />
                     </div>
                     
-                    <div className="flex-1">
-                      <h3 className="orbitron text-lg" style={{ color: contact.color }}>
+                    {/* Contact Main Details */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="orbitron text-lg flex items-center gap-2" style={{ color: contact.color }}>
                         {contact.name}
+                        {isSelected && (
+                          <span className="w-2 h-2 rounded-full bg-[#00E0FF] animate-pulse" />
+                        )}
                       </h3>
-                      <p className="jetbrains text-[#00E0FF] cyber-text-glow">
+                      <p className="jetbrains text-[#00E0FF] cyber-text-glow truncate">
                         {contact.value}
                       </p>
-                      <p className="jetbrains text-xs text-[#0FF4F8] mt-1">
-                        {contact.description}
+                      <p className="jetbrains text-xs text-[#0FF4F8] mt-1 opacity-80">
+                        {t(contact.descriptionKey)}
                       </p>
                     </div>
                     
-                    <div className="text-[#A020F0] opacity-50">
-                      →
+                    {/* Actions: Copy and Link */}
+                    <div className="flex items-center space-x-2">
+                      {contact.copyableText && (
+                        <button
+                          type="button"
+                          title="Скопировать"
+                          onClick={(e) => handleCopy(e, contact.id, contact.copyableText!)}
+                          className="p-2 rounded-md hover:bg-[#1a1a24] text-[#0FF4F8] transition-colors relative"
+                        >
+                          {isCopied ? (
+                            <Check size={18} className="text-[#00ff41]" />
+                          ) : (
+                            <Copy size={18} className="opacity-70 hover:opacity-100" />
+                          )}
+
+                          <AnimatePresence>
+                            {isCopied && (
+                              <motion.span
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: -25 }}
+                                exit={{ opacity: 0 }}
+                                className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#00ff41] text-black text-[10px] font-bold px-2 py-0.5 rounded shadow-md whitespace-nowrap jetbrains"
+                              >
+                                Copied!
+                              </motion.span>
+                            )}
+                          </AnimatePresence>
+                        </button>
+                      )}
+
+                      <div className={`p-2 transition-transform duration-300 ${
+                        isHovered || isSelected ? 'translate-x-1 text-[#00E0FF]' : 'text-[#A020F0] opacity-50'
+                      }`}>
+                        <ExternalLink size={18} />
+                      </div>
                     </div>
                   </div>
                 </motion.a>

@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, Star } from 'lucide-react';
-import type { Project } from '../data/projects';
+import type { Project } from '../types/projects';
 import { getCategoryIcon, getStatusColor } from '../utils/utils';
+import { useLanguage } from './LanguageContext';
 
 interface ProjectCardProps {
   project: Project;
@@ -11,6 +12,16 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = memo(({ project, onOpen, index }: ProjectCardProps) => {
+  const { t } = useLanguage();
+
+  // Получаем динамические текстовые данные из словаря переводов
+  const title = t(`${project.translationKey}.title`);
+  const description = t(`${project.translationKey}.description`);
+
+  // Переводы статуса и категории
+  const statusLabel = t(`projects.statuses.${project.status}`);
+  const categoryLabel = t(`projects.categories.${project.category}`);
+
   return (
     <motion.div
       className="cyber-border rounded-lg bg-[#050508] overflow-hidden cursor-pointer hover:cyber-glow transition-all duration-300 flex flex-col h-full hover:-translate-y-1"
@@ -33,21 +44,21 @@ export const ProjectCard = memo(({ project, onOpen, index }: ProjectCardProps) =
             className="px-2 py-1 rounded text-xs jetbrains cyber-border backdrop-blur-sm"
             style={{ color: getStatusColor(project.status) }}
           >
-            {project.status}
+            {statusLabel}
           </div>
         </div>
         <div className="absolute bottom-2 left-4 right-2 bg-black/50 p-1 rounded">
           <div className="flex items-center space-x-2 mb-1">
             {getCategoryIcon(project.category, 'label')}
-            <span className="text-xs jetbrains text-[#0FF4F8]">{project.category}</span>
+            <span className="text-xs jetbrains text-[#0FF4F8]">{categoryLabel}</span>
           </div>
-          <h3 className="orbitron text-xl text-white cyber-text-glow truncate">{project.title}</h3>
+          <h3 className="orbitron text-xl text-white cyber-text-glow truncate">{title}</h3>
         </div>
       </div>
 
       <div className="p-6 flex flex-col flex-1">
         <p className="jetbrains text-sm text-[#00E0FF] leading-relaxed line-clamp-3 mb-4 flex-1">
-          {project.description}
+          {description}
         </p>
 
         <div className="space-y-4 shrink-0">
@@ -77,7 +88,7 @@ export const ProjectCard = memo(({ project, onOpen, index }: ProjectCardProps) =
             </div>
 
             <span className="jetbrains text-xs text-[#0FF4F8] uppercase animate-pulse">
-              Open details {'>'}
+              {t('card.openDetails') || 'Open details'} {'>'}
             </span>
           </div>
         </div>
@@ -85,3 +96,5 @@ export const ProjectCard = memo(({ project, onOpen, index }: ProjectCardProps) =
     </motion.div>
   );
 });
+
+ProjectCard.displayName = 'ProjectCard';

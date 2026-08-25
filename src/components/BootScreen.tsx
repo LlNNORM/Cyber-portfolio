@@ -13,15 +13,6 @@ const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   
-  // const bootSteps = [
-  //   "Booting PersonalityOS v1.0...",
-  //   "Initializing Neural Networks...",
-  //   "Loading Creativity Core...",
-  //   "Establishing Git Connections...",
-  //   "Calibrating JavaScript Engine...",
-  //   "Mounting React Components...",
-  //   "System Ready."
-  // ];
     const bootSteps = [
     'boot.initializing',
     'boot.loading',

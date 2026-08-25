@@ -3,8 +3,8 @@ import React, {
   useContext,
   useState,
   useEffect,
-  ReactNode,
 } from "react";
+import type { ReactNode } from "react";
 
 export type Language = "en" | "ru";
 
@@ -133,20 +133,115 @@ const translations = {
     
 
     // Projects Screen
-    "projects.title": "PROJECT PORTFOLIO",
-    "projects.back": "< BACK TO TERMINAL",
-    "projects.filter_all": "All Projects",
-    "projects.status.completed": "COMPLETED",
-    "projects.status.active": "ACTIVE",
-    "projects.status.archived": "ARCHIVED",
-    "projects.tech_stack": "Tech Stack",
-    "projects.live_demo": "Live Demo",
-    "projects.source_code": "Source Code",
-    "projects.total_projects": "Total Projects",
-    "projects.completed_projects": "Completed",
-    "projects.active_projects": "Active",
-    "projects.archived_projects": "Archived",
+      projects: {
+          back: "< BACK TO TERMINAL",
+          title: "PROJECT ARCHIVE",
+          notFoundTitle: "NO PROJECTS FOUND",
+          notFoundSub: "Try changing the selected filter",
+          total:"Total projects",
+          categories: {
+            All: "All",
+            "Web Application": "Web Application",
+            "Social Platform": "Social Platform",
+            Gallery: "Gallery",
+            Analytics: "Analytics",
+            "AI Tools": "AI Tools",
+            Landing: "Landing",
+            Blockchain: "Blockchain"
+          },
+          statuses: {
+            Production: "Production",
+            Beta: "Beta",
+            Complete: "Complete",
+            Development: "In Development"
+          },
+          items: {
+            1: {
+              title: "Closing Tag",
+              description: "Reflective diary-trainer for beginner web developers, covering emotional and psychological stages of learning.",
+              detailedDescription: "Structured as a learning chronicle divided into thematic blocks — from sprint zero to the finish line. Includes interactive areas for personal notes.",
+              features: [
+                "Thematic sprint navigation",
+                "Reflective emotional triggers",
+                "Interactive text areas",
+                "Motivational narrative",
+                "Philosophical ending"
+              ]
+            },
+            2: {
+              title: "SkillSwap Platform",
+              description: "Social skill-sharing platform for software developers",
+              detailedDescription: "Comprehensive social platform connecting developers for peer learning, video calls, live chats, and rating systems.",
+              features: [
+                "Smart user matching",
+                "Video calls & screen sharing",
+                "Ratings & review system",
+                "Gamification with achievements",
+                "Learning session scheduler"
+              ]
+            },
+            3: {
+              title: "MestoProject Gallery",
+              description: "Interactive photo gallery with social features",
+              detailedDescription: "Modern image gallery featuring photo uploads, likes, comments, and custom collection management.",
+              features: [
+                "Image upload & optimization",
+                "Likes and comment threads",
+                "Custom collection management",
+                "Advanced search & filters",
+                "Responsive lazy-loading layout"
+              ]
+            },
+            4: {
+              title: "CyberDash Analytics",
+              description: "Real-time analytics & data monitoring dashboard",
+              detailedDescription: "Advanced analytics dashboard featuring real-time data visualization, customizable widgets, smart alerts, and reporting.",
+              features: [
+                "Real-time data visualization",
+                "Custom interactive widgets",
+                "Smart alert system",
+                "PDF/Excel export",
+                "External API integrations"
+              ]
+            },
+            5: {
+              title: "Multuverse Window",
+              description: "AI assistant for code analysis and optimization",
+              detailedDescription: "ML-powered code inspection tool offering refactoring suggestions and automated bug detection.",
+              features: [
+                "ML code quality analysis",
+                "Automated bug detection",
+                "Refactoring recommendations",
+                "Documentation generator",
+                "VS Code integration"
+              ]
+            },
+            6: {
+              title: "BlockChain Tracker",
+              description: "Blockchain transaction monitoring and analytics system",
+              detailedDescription: "Comprehensive system for tracking multi-chain transactions in real time with visual analytics.",
+              features: [
+                "Multi-chain network tracking",
+                "Real-time transaction stream",
+                "Detailed analytics & stats",
+                "Custom alert triggers",
+                "Visual transaction flow"
+              ]
+            }
+          }
+        },
 
+    // Project Details Screen 
+        card: {
+          openDetails: "Open details",
+        },
+        modal: {
+          systemDescription: "System Description",
+          techStack: "Tech Stack",
+          keyFeatures: "Key Features",
+          viewSource: "View Source",
+          launchApp: "Launch App",
+        },
     // Contacts Screen
         contacts: {
           back: '< BACK TO TERMINAL',
@@ -250,24 +345,162 @@ const translations = {
       },
     },
 
-
-    
-
+    // Profile Screen
+        profile: {
+            title: "НЕЙРОПРОФИЛЬ",
+            back: "< НАЗАД К ТЕРМИНАЛУ",
+            status: "Статус",
+            online: "ОНЛАЙН",
+            name: "LINNORM", // имя не переводится
+            role: "Фронтенд-разработчик",
+            location: "Специалист по нейроинтерфейсам",
+            years_experience: "Лет опыта",
+            projects_completed: "Завершенных проектов",
+            coffee_consumed: "Выпито кофе",
+            bugs_fixed: "Исправлено багов",
+            achievements: "ДОСТИЖЕНИЯ И СПЕЦИАЛИЗАЦИИ",
+            stats: {
+              exp: "Лет опыта",
+              projects: "Завершенных проектов",
+              coffee: "Выпито кофе",
+              bugs: "Исправлено багов"
+        },
+            achievements_list: {
+              react: {
+                title: "Специалист по React",
+                description: "Эксперт в экосистеме React"
+              },
+              ts: {
+                title: "Сторонник TypeScript",
+                description: "Энтузиаст строгой типизации"
+              },
+              perf: {
+                title: "Оптимизатор производительности",
+                description: "Гуру скорости приложений"
+              },
+              uiux: {
+                title: "UI/UX дизайнер",
+                description: "Создатель красивых интерфейсов"
+              },
+              solver: {
+                title: "Решатель проблем",
+                description: "Разрешитель сложных задач"
+              },
+              team: {
+                title: "Командный игрок",
+                description: "Сторонник совместной разработки"
+              }
+      }
+      },
     // Projects Screen
-    "projects.title": "ПОРТФОЛИО ПРОЕКТОВ",
-    "projects.back": "< НАЗАД В ТЕРМИНАЛ",
-    "projects.filter_all": "Все проекты",
-    "projects.status.completed": "ЗАВЕРШЕН",
-    "projects.status.active": "АКТИВЕН",
-    "projects.status.archived": "АРХИВ",
-    "projects.tech_stack": "Технологии",
-    "projects.live_demo": "Демо",
-    "projects.source_code": "Исходный код",
-    "projects.total_projects": "Всего проектов",
-    "projects.completed_projects": "Завершено",
-    "projects.active_projects": "Активно",
-    "projects.archived_projects": "Архив",
-
+      projects: {
+          back: "< НАЗАД В ТЕРМИНАЛ",
+          title: "АРХИВ ПРОЕКТОВ",
+          notFoundTitle: "ПРОЕКТЫ НЕ НАЙДЕНЫ",
+          notFoundSub: "Попробуйте изменить выбранный фильтр",
+          total:"Всего проектов",
+          categories: {
+            All: "Все",
+            "Web Application": "Веб-приложение",
+            "Social Platform": "Социальная платформа",
+            Gallery: "Галерея",
+            Analytics: "Аналитика",
+            "AI Tools": "ИИ-инструменты",
+            Landing: "Лендинг",
+            Blockchain: "Блокчейн"
+          },
+          statuses: {
+            Production: "Продакшн",
+            Beta: "Бета",
+            Complete: "Завершён",
+            Development: "В разработке"
+          },
+          items: {
+            1: {
+              title: "Закрывающий тег",
+              description: "Рефлексивный дневник-тренажёр для начинающих веб-разработчиков, посвящённый эмоциональным и психологическим этапам обучения вёрстке.",
+              detailedDescription: "Сайт структурирован как хроника обучения вёрстке, разбитая на тематические блоки — от «нулевого спринта» до финальной точки. Каждый раздел описывает типичные состояния новичка. В конце каждого блока находится приглашение «Место для ваших воспоминаний о начале обучения», превращающее страницу в интерактивный журнал личного опыта.",
+              features: [
+                "Тематическая навигация по спринтам — от подготовки до текущего момента",
+                "Рефлексивные триггеры — описание типичных эмоций и состояний",
+                "Интерактивные поля — места для личных записей",
+                "Мотивационный нарратив",
+                "Философское завершение"
+              ]
+            },
+            2: {
+              title: "SkillSwap Platform",
+              description: "Социальная платформа для обмена навыками между разработчиками",
+              detailedDescription: "Комплексная социальная платформа, объединяющая разработчиков для взаимного обучения и обмена навыками. Включает систему матчинга, видеозвонки, чат и систему рейтингов.",
+              features: [
+                "Интеллектуальный матчинг пользователей",
+                "Видеозвонки и экранная демонстрация",
+                "Система рейтингов и отзывов",
+                "Геймификация с достижениями",
+                "Планировщик сессий обучения"
+              ]
+            },
+            3: {
+              title: "MestoProject Gallery",
+              description: "Интерактивная фотогалерея с социальными функциями",
+              detailedDescription: "Современная фотогалерея с функциями социальной сети. Пользователи могут загружать фотографии, ставить лайки, комментировать и создавать коллекции.",
+              features: [
+                "Загрузка и оптимизация изображений",
+                "Система лайков и комментариев",
+                "Создание и управление коллекциями",
+                "Продвинутый поиск и фильтрация",
+                "Responsive галерея с lazy loading"
+              ]
+            },
+            4: {
+              title: "CyberDash Analytics",
+              description: "Real-time дашборд для мониторинга и аналитики данных",
+              detailedDescription: "Продвинутая система аналитики с real-time визуализацией данных. Включает настраиваемые виджеты, интерактивные графики, систему алертов и экспорт отчетов.",
+              features: [
+                "Real-time визуализация данных",
+                "Настраиваемые интерактивные дашборды",
+                "Система умных алертов",
+                "Экспорт в PDF/Excel",
+                "API для интеграции с внешними системами"
+              ]
+            },
+            5: {
+              title: "Multuverse Window",
+              description: "AI-помощник для анализа и оптимизации кода",
+              detailedDescription: "Интеллектуальный инструмент для анализа кода с использованием машинного обучения. Предоставляет рекомендации по оптимизации, находит потенциальные баги.",
+              features: [
+                "Анализ качества кода с ML",
+                "Автоматическое обнаружение багов",
+                "Предложения по рефакторингу",
+                "Генерация документации",
+                "Интеграция с VS Code"
+              ]
+            },
+            6: {
+              title: "BlockChain Tracker",
+              description: "Система мониторинга и анализа блокчейн транзакций",
+              detailedDescription: "Комплексная система для отслеживания и анализа блокчейн транзакций в реальном времени. Поддерживает множественные сети и предоставляет детальную аналитику.",
+              features: [
+                "Мониторинг множественных блокчейн сетей",
+                "Real-time отслеживание транзакций",
+                "Детальная аналитика и статистика",
+                "Система алертов и уведомлений",
+                "Визуализация потоков транзакций"
+              ]
+            }
+          }
+        },
+        // projectCard
+        card: {
+          openDetails: "Подробнее",
+        },
+        modal: {
+          systemDescription: "Описание системы",
+          techStack: "Технологический стек",
+          keyFeatures: "Ключевые особенности",
+          viewSource: "Исходный код",
+          launchApp: "Запустить проект",
+        },
     // Contacts Screen
      contacts: {
       back: '< НАЗАД В ТЕРМИНАЛ',
