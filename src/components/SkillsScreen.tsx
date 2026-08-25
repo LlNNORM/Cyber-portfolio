@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import type { Skill } from './types';
+import type { Skill } from '../types/skills';
 import { getIconForCategory } from '../utils/sphereUtils';
 import { DEFAULT_SKILLS } from '../data/skills';
 import { useSphereAnimation } from './useSphereAnimation';

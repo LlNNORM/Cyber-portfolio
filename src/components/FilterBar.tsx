@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Filter } from 'lucide-react';
-import type { ProjectCategory } from './types';
+import type { ProjectCategory } from '../types/projects';
 
 interface FilterBarProps {
   onBack: () => void;

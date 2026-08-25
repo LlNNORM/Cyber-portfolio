@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-// import logo from '../assets/dragon-logo.svg';
 import Logo from '../assets/dragon-logo.svg?react';
 import { useLanguage } from './LanguageContext';
 

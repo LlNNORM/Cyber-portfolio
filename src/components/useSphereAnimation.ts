@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
-import type { Skill } from './types';
+import type { Skill } from '../types/skills';
 
 export const useSphereAnimation = (skills: Skill[], hoveredSkill: Skill | null) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
