@@ -6,13 +6,15 @@ import { DEFAULT_SKILLS } from '../data/skills';
 import { useSphereAnimation } from './useSphereAnimation';
 import { EnergyCore } from './EnergyCore';
 import { ScreenHeader } from './ScreenHeader';
+import type { Screen } from '../types/screens';
 
 export interface SkillsScreenProps {
   skills?: Skill[];
   onBack: () => void;
+  onNavigate: (screen: Screen) => void;
 }
 
-const SkillsScreen: React.FC<SkillsScreenProps> = ({ skills, onBack }) => {
+const SkillsScreen: React.FC<SkillsScreenProps> = ({ skills, onBack, onNavigate }) => {
   const safeSkills = useMemo(() => {
     return Array.isArray(skills) && skills.length > 0 ? skills : DEFAULT_SKILLS;
   }, [skills]);
@@ -50,6 +52,8 @@ const SkillsScreen: React.FC<SkillsScreenProps> = ({ skills, onBack }) => {
           onBack={onBack}
           backText="BACK TO TERMINAL"
           title="SKILLS CORE"
+          currentScreen="skills"
+          onNavigate={onNavigate}
           rightElement={
             <div className="jetbrains text-[#0FF4F8] text-sm">
               Status: <span className="text-[#00ff41] cyber-flicker">ACTIVE</span>

@@ -7,12 +7,14 @@ import { FloatingBackground } from './FloatingBackground';
 import { ScreenHeader } from './ScreenHeader';
 import { CONTACTS_DATA } from '../data/contacts';
 import type { ContactItem } from '../types/contacts';
+import type { Screen } from '../types/screens';
 
 interface ContactsScreenProps {
   onBack: () => void;
+  onNavigate: (screen: Screen) => void;
 }
 
-const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
+const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack, onNavigate }) => {
   const [selectedContact, setSelectedContact] = useState<ContactItem>(CONTACTS_DATA[0]);
   const [hoveredContact, setHoveredContact] = useState<ContactItem | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -44,6 +46,8 @@ const ContactsScreen: React.FC<ContactsScreenProps> = ({ onBack }) => {
           onBack={onBack}
           backText={t('contacts.back')}
           title={t('contacts.title')}
+          currentScreen="contacts"
+          onNavigate={onNavigate}
           rightElement={
             <div className="jetbrains text-[#0FF4F8] text-xs sm:text-sm flex items-center shrink-0">
               <Calendar size={14} className="mr-1 sm:w-4 sm:h-4" />

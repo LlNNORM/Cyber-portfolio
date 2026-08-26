@@ -7,12 +7,14 @@ import { ProjectModal } from './ProjectModal';
 import { ScreenHeader } from './ScreenHeader';
 import { ProjectFilter } from './ProjectFilter';
 import { useLanguage } from './LanguageContext';
+import type { Screen } from '../types/screens';
 
 interface ProjectsScreenProps {
   onBack: () => void;
+  onNavigate: (screen: Screen) => void;
 }
 
-const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
+const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack, onNavigate }) => {
   const { t } = useLanguage();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filterCategory, setFilterCategory] = useState<ProjectCategory>('All');
@@ -45,6 +47,8 @@ const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ onBack }) => {
             onBack={onBack}
             backText={t('projects.back')}
             title={t('projects.title')}
+            currentScreen="projects"
+            onNavigate={onNavigate}
             rightElement={
               <ProjectFilter
                 categories={categories}

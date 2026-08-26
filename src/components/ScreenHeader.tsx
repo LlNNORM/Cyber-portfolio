@@ -1,12 +1,22 @@
 import React from 'react';
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import MobileMenu from './MobileMenu';
+import type { Screen } from '../types/screens';
 
 interface ScreenHeaderProps {
   onBack: () => void;
   backText: string;
   title: string;
+
+  // Остаётся исключительно desktop-элементом
   rightElement?: ReactNode;
+
+  // Текущий экран для MobileMenu
+  currentScreen: Screen;
+
+  // Общая навигация приложения
+  onNavigate: (screen: Screen) => void;
 }
 
 export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
@@ -14,6 +24,8 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   backText,
   title,
   rightElement,
+  currentScreen,
+  onNavigate,
 }) => {
   return (
     <motion.div
@@ -22,7 +34,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
-      {/* Десктопная версия (md+): Grid из 3 колонок */}
+      {/* DESKTOP */}
       <div className="hidden md:grid md:grid-cols-3 md:items-center w-full gap-4">
         <div className="justify-self-start">
           <button
@@ -32,6 +44,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
             <span className="inline-block transition-transform duration-300 ease-out group-hover:-translate-x-1 font-bold">
               &lt;&lt;
             </span>
+
             <span>{backText}</span>
           </button>
         </div>
@@ -40,14 +53,14 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
           {title}
         </h1>
 
+        {/* Desktop-specific right element */}
         <div className="justify-self-end">
           {rightElement}
         </div>
       </div>
 
-      {/* Мобильная версия (< md): Компактный однострочный layout */}
+      {/* MOBILE */}
       <div className="flex md:hidden items-center justify-between gap-2 w-full min-h-[40px]">
-        {/* Кнопка «Назад» с анимацией << */}
         <button
           onClick={onBack}
           className="group cyber-border rounded-lg px-3 py-1.5 jetbrains text-xs text-[#00E0FF] hover:bg-[#A020F0]/20 transition-all duration-300 shrink-0 active:scale-95 flex items-center justify-center gap-1.5 min-w-[36px]"
@@ -56,18 +69,21 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
           <span className="inline-block text-xs font-bold transition-transform duration-300 ease-out group-hover:-translate-x-1">
             &lt;&lt;
           </span>
-          <span className="hidden sm:inline">{backText}</span>
+
+          <span className="hidden sm:inline">
+            {backText}
+          </span>
         </button>
 
-        {/* Заголовок по центру */}
-        <h1 className="orbitron text-base sm:text-xl text-[#A020F0] cyber-text-glow tracking-wider text-center truncate px-1">
+        <h1 className="orbitron text-base sm:text-xl text-[#A020F0] cyber-text-glow tracking-wider text-center truncate px-1 flex-1 min-w-0">
           {title}
         </h1>
 
-        {/* Правый элемент или балансировочная заглушка */}
-        <div className="shrink-0 flex justify-end items-center min-w-[36px]">
-          {rightElement}
-        </div>
+        {/* Common mobile navigation */}
+        <MobileMenu
+          currentScreen={currentScreen}
+          onNavigate={onNavigate}
+        />
       </div>
     </motion.div>
   );

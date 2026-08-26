@@ -1,0 +1,1 @@
+export type Screen = 'boot' | 'terminal' | 'profile' |'skills'| 'projects' | 'contacts';

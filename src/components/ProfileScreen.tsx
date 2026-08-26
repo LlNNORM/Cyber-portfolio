@@ -6,12 +6,14 @@ import profileImg3 from '../assets/profile3.webp';
 import { useLanguage } from './LanguageContext';
 import { ScreenHeader } from './ScreenHeader';
 import { STATS_CONFIG, ACHIEVEMENTS_CONFIG } from '../data/achievements';
+import type { Screen } from '../types/screens';
 
 interface ProfileScreenProps {
   onBack: () => void;
+  onNavigate: (screen: Screen) => void;
 }
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack }) => {
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate }) => {
   const { t } = useLanguage();
 
   return (
@@ -28,6 +30,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack }) => {
           onBack={onBack}
           backText={t('profile.back')}
           title={t('profile.title')}
+          currentScreen="profile"
+          onNavigate={onNavigate}
           rightElement={
             <div className="jetbrains text-[#0FF4F8] text-sm hidden sm:block">
               {t('profile.status')}:{' '}

@@ -10,9 +10,7 @@ import SkillsScreen from './components/SkillsScreen';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { LanguageProvider } from './components/LanguageContext';
 import { DEFAULT_SKILLS } from './data/skills';
-
-
-type Screen = 'boot' | 'terminal' | 'profile' |'skills'| 'projects' | 'contacts';
+import type { Screen } from './types/screens';
 
 export function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('boot');
@@ -136,7 +134,10 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <ProfileScreen onBack={() => handleScreenChange('terminal')} />
+              <ProfileScreen
+                    onBack={() => handleScreenChange('terminal')}
+                    onNavigate={handleScreenChange}
+                  />
             </motion.div>
           )}
 
@@ -149,7 +150,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <SkillsScreen onBack={() => handleScreenChange('terminal')}  skills={ DEFAULT_SKILLS} />
+              <SkillsScreen onBack={() => handleScreenChange('terminal')} onNavigate={handleScreenChange}  skills={ DEFAULT_SKILLS} />
             </motion.div>
           )}
 
@@ -162,7 +163,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <ProjectsScreen onBack={() => handleScreenChange('terminal')} />
+              <ProjectsScreen onBack={() => handleScreenChange('terminal')} onNavigate={handleScreenChange}/>
             </motion.div>
           )}
 
@@ -175,7 +176,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <ContactsScreen onBack={() => handleScreenChange('terminal')} />
+              <ContactsScreen onBack={() => handleScreenChange('terminal')} onNavigate={handleScreenChange}/>
             </motion.div>
           )}
         </AnimatePresence>
