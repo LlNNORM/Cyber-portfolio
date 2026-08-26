@@ -9,6 +9,7 @@ import ContactsScreen from './components/ContactsScreen';
 import SkillsScreen from './components/SkillsScreen';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { LanguageProvider } from './components/LanguageContext';
+import { DEFAULT_SKILLS } from './data/skills';
 
 
 type Screen = 'boot' | 'terminal' | 'profile' |'skills'| 'projects' | 'contacts';
@@ -16,23 +17,6 @@ type Screen = 'boot' | 'terminal' | 'profile' |'skills'| 'projects' | 'contacts'
 export function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('boot');
   const [isGlitching, setIsGlitching] = useState(false);
-  const skills = [
-  { name: 'TypeScript', level: 95, color: '#3178C6', category: 'Programming' },
-  { name: 'JavaScript', level: 98, color: '#F7DF1E', category: 'Programming' },
-  { name: 'React', level: 92, color: '#61DAFB', category: 'Frontend' },
-  { name: 'Next.js', level: 85, color: '#FFFFFF', category: 'Framework' },
-  { name: 'Node.js', level: 82, color: '#339933', category: 'Backend' },
-  { name: 'PostgreSQL', level: 75, color: '#336791', category: 'Database' },
-  { name: 'Docker', level: 78, color: '#2496ED', category: 'DevOps' },
-  { name: 'Tailwind CSS', level: 90, color: '#06B6D4', category: 'Styling' },
-  { name: 'Three.js', level: 65, color: '#000000', category: '3D Graphics' },
-  { name: 'Jest', level: 70, color: '#C21325', category: 'Testing' },
-  { name: 'Redux Toolkit', level: 88, color: '#764ABC', category: 'State Management' },
-  { name: 'Webpack', level: 60, color: '#8DD6F9', category: 'Build Tools' },
-  { name: 'Framer Motion', level: 85, color: '#0055FF', category: 'Animation' },
-  { name: 'WebSockets', level: 72, color: '#FF9900', category: 'Real-time' },
-  { name: 'GraphQL', level: 68, color: '#E10098', category: 'API' },
-];
   // Force dark mode for cyberpunk theme
   useEffect(() => {
     document.documentElement.classList.add('dark');
@@ -98,7 +82,7 @@ const glitchVariants: Variants = {
   return (
     <div className="relative w-full h-screen bg-[#050508] overflow-hidden">
       {/* Language switcher - visible on all screens except boot */}
-      {currentScreen !== 'boot' && (
+      {currentScreen === 'terminal' && (
         <div className="fixed top-4 right-4 z-50">
           <LanguageSwitcher />
         </div>
@@ -165,7 +149,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <SkillsScreen onBack={() => handleScreenChange('terminal')}  skills={ skills} />
+              <SkillsScreen onBack={() => handleScreenChange('terminal')}  skills={ DEFAULT_SKILLS} />
             </motion.div>
           )}
 
@@ -196,25 +180,6 @@ const glitchVariants: Variants = {
           )}
         </AnimatePresence>
       </motion.div>
-
-{/* Debug navigation (remove in production) */}
-      {/* {(
-        <div className="fixed bottom-4 right-4 z-50 flex space-x-2">
-          {(['boot', 'terminal', 'profile', 'projects', 'contacts'] as Screen[]).map((screen) => (
-            <button
-              key={screen}
-              onClick={() => handleScreenChange(screen)}
-              className={`px-2 py-1 text-xs rounded jetbrains transition-all duration-300 ${
-                currentScreen === screen
-                  ? 'bg-[#A020F0] text-white'
-                  : 'bg-[#050508] text-[#00E0FF] border border-[#A020F0]'
-              }`}
-            >
-              {screen}
-            </button>
-          ))}
-        </div>
-      )} */}
       
     </div>
   );

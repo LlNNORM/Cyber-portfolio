@@ -1,69 +1,44 @@
-# React + TypeScript + Vite
+# ⚡ Cyber Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Интерактивное веб-портфолио в футуристической киберпанк-стилистике, разработанное для демонстрации фронтенд-проектов, навыков и нестандартных UI/UX решений.
 
-Currently, two official plugins are available:
+[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen?style=for-the-badge&logo=vercel)](https://cyber-portfolio-eight-woad.vercel.app/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![GitHub](https://img.shields.io/badge/GitHub-LlNNORM-181717?style=for-the-badge&logo=github)](https://github.com/LlNNORM/Cyber-portfolio)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 👁️ Обзор
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Cyber Portfolio** — это не просто страница-резюме, а полноценный интерактивный веб-интерфейс с неоновой эстетикой, динамическими визуальными эффектами и современной архитектурой на базе Vite.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* **Live Demo:** [cyber-portfolio-eight-woad.vercel.app](https://cyber-portfolio-eight-woad.vercel.app/)
+* **Репозиторий:** [github.com/LlNNORM/Cyber-portfolio](https://github.com/LlNNORM/Cyber-portfolio)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## ✨ Ключевые особенности
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+* **Киберпанк-дизайн:** Неоновое свечение, стилизованные элементы управления и продуманная анимация интерфейса.
+* **Высокая скорость:** Оптимизированная сборка и мгновенная загрузка страниц благодаря **Vite**.
+* **Адаптивная верстка:** Корректное отображение на всех типах устройств — от мобильных телефонов до 4K-мониторов.
+* **Модульная структура:** Чистый, легко читаемый и поддерживаемый код с компонентным подходом.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠️ Стек технологий
+
+* **Core:** HTML5, CSS3 / Modern CSS (Custom Properties, Flexbox, Grid), JavaScript (ES6+) / React
+* **Сборщик:** [Vite](https://vitejs.dev/)
+* **Хостинг & CI/CD:** [Vercel](https://vercel.com/)
+
+---
+
+## 🚀 Быстрый старт
+
+Для локального запуска проекта выполните следующие шаги:
+
+### 1. Клонирование репозитория
+```bash
+git clone [https://github.com/LlNNORM/Cyber-portfolio.git](https://github.com/LlNNORM/Cyber-portfolio.git)
+cd Cyber-portfolio

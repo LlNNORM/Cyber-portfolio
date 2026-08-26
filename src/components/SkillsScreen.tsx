@@ -48,7 +48,7 @@ const SkillsScreen: React.FC<SkillsScreenProps> = ({ skills, onBack }) => {
         {/* ХЕДЕР */}
         <ScreenHeader
           onBack={onBack}
-          backText="< BACK TO TERMINAL"
+          backText="BACK TO TERMINAL"
           title="SKILLS CORE"
           rightElement={
             <div className="jetbrains text-[#0FF4F8] text-sm">

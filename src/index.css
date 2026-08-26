@@ -263,8 +263,8 @@ html {
 
 .cyber-grid {
   background-image: 
-    linear-gradient(rgba(160, 32, 240, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(160, 32, 240, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(160, 32, 240, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(160, 32, 240, 0.2) 1px, transparent 1px);
   background-size: 50px 50px;
 }
 

@@ -17,19 +17,22 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 }) => {
   return (
     <motion.div
-      className="w-full mb-2 md:mb-4"
+      className="w-full mb-3 md:mb-6"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
-      {/* Десктопная версия (md+): Grid из 3 колонок для точной центровки заголовка */}
+      {/* Десктопная версия (md+): Grid из 3 колонок */}
       <div className="hidden md:grid md:grid-cols-3 md:items-center w-full gap-4">
         <div className="justify-self-start">
           <button
             onClick={onBack}
-            className="cyber-border rounded-lg px-4 py-2 jetbrains text-sm text-[#00E0FF] hover:bg-[#A020F0] hover:bg-opacity-20 transition-all duration-300 whitespace-nowrap"
+            className="group cyber-border rounded-lg px-4 py-2 jetbrains text-sm text-[#00E0FF] hover:bg-[#A020F0]/20 transition-all duration-300 whitespace-nowrap active:scale-95 flex items-center gap-2"
           >
-            {backText}
+            <span className="inline-block transition-transform duration-300 ease-out group-hover:-translate-x-1 font-bold">
+              &lt;&lt;
+            </span>
+            <span>{backText}</span>
           </button>
         </div>
 
@@ -42,26 +45,29 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
         </div>
       </div>
 
-      {/* Мобильная версия (< md): компактный стек */}
-      <div className="flex md:hidden flex-col gap-3 w-full">
-        <div className="flex items-center justify-between w-full">
-          <button
-            onClick={onBack}
-            className="cyber-border rounded-lg px-3 py-1.5 jetbrains text-xs text-[#00E0FF] hover:bg-[#A020F0] hover:bg-opacity-20 transition-all duration-300"
-          >
-            {backText}
-          </button>
-        </div>
+      {/* Мобильная версия (< md): Компактный однострочный layout */}
+      <div className="flex md:hidden items-center justify-between gap-2 w-full min-h-[40px]">
+        {/* Кнопка «Назад» с анимацией << */}
+        <button
+          onClick={onBack}
+          className="group cyber-border rounded-lg px-3 py-1.5 jetbrains text-xs text-[#00E0FF] hover:bg-[#A020F0]/20 transition-all duration-300 shrink-0 active:scale-95 flex items-center justify-center gap-1.5 min-w-[36px]"
+          aria-label={backText}
+        >
+          <span className="inline-block text-xs font-bold transition-transform duration-300 ease-out group-hover:-translate-x-1">
+            &lt;&lt;
+          </span>
+          <span className="hidden sm:inline">{backText}</span>
+        </button>
 
-        <h1 className="orbitron text-xl sm:text-2xl text-[#A020F0] cyber-text-glow tracking-wider text-center">
+        {/* Заголовок по центру */}
+        <h1 className="orbitron text-base sm:text-xl text-[#A020F0] cyber-text-glow tracking-wider text-center truncate px-1">
           {title}
         </h1>
 
-        {rightElement && (
-          <div className="w-full pt-1">
-            {rightElement}
-          </div>
-        )}
+        {/* Правый элемент или балансировочная заглушка */}
+        <div className="shrink-0 flex justify-end items-center min-w-[36px]">
+          {rightElement}
+        </div>
       </div>
     </motion.div>
   );

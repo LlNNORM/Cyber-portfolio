@@ -104,7 +104,7 @@ const translations = {
     // Profile Screen
     profile: {
       title: "NEUROPROFILE",
-      back: "< BACK TO TERMINAL",
+      back: "BACK TO TERMINAL",
       status: "Status",
       online: "ONLINE",
       name: "LINNORM",
@@ -134,7 +134,7 @@ const translations = {
 
     // Projects Screen
       projects: {
-          back: "< BACK TO TERMINAL",
+          back: "BACK TO TERMINAL",
           title: "PROJECT ARCHIVE",
           notFoundTitle: "NO PROJECTS FOUND",
           notFoundSub: "Try changing the selected filter",
@@ -244,7 +244,7 @@ const translations = {
         },
     // Contacts Screen
         contacts: {
-          back: '< BACK TO TERMINAL',
+          back: 'BACK TO TERMINAL',
           title: 'NEURAL INTERFACE',
           available: 'Available 24/7',
           quick_access: 'QUICK ACCESS',
@@ -348,7 +348,7 @@ const translations = {
     // Profile Screen
         profile: {
             title: "НЕЙРОПРОФИЛЬ",
-            back: "< НАЗАД К ТЕРМИНАЛУ",
+            back: "НАЗАД К ТЕРМИНАЛУ",
             status: "Статус",
             online: "ОНЛАЙН",
             name: "LINNORM", // имя не переводится
@@ -394,7 +394,7 @@ const translations = {
       },
     // Projects Screen
       projects: {
-          back: "< НАЗАД В ТЕРМИНАЛ",
+          back: "НАЗАД В ТЕРМИНАЛ",
           title: "АРХИВ ПРОЕКТОВ",
           notFoundTitle: "ПРОЕКТЫ НЕ НАЙДЕНЫ",
           notFoundSub: "Попробуйте изменить выбранный фильтр",
@@ -503,7 +503,7 @@ const translations = {
         },
     // Contacts Screen
      contacts: {
-      back: '< НАЗАД В ТЕРМИНАЛ',
+      back: 'НАЗАД В ТЕРМИНАЛ',
       title: 'НЕЙРОИНТЕРФЕЙС',
       available: 'На связи 24/7',
       quick_access: 'БЫСТРЫЙ ДОСТУП',
