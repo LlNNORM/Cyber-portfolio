@@ -63,10 +63,10 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
       <div className="flex md:hidden items-center justify-between gap-2 w-full min-h-[40px]">
         <button
           onClick={onBack}
-          className="group cyber-border rounded-lg px-3 py-1.5 jetbrains text-xs text-[#00E0FF] hover:bg-[#A020F0]/20 transition-all duration-300 shrink-0 active:scale-95 flex items-center justify-center gap-1.5 min-w-[36px]"
+          className="group w-12 h-12 cyber-border rounded-lg px-3 py-1.5 jetbrains text-xs text-[#00E0FF] hover:bg-[#A020F0]/20 transition-all duration-300 shrink-0 active:scale-95 flex items-center justify-center gap-1.5 min-w-[36px]"
           aria-label={backText}
         >
-          <span className="inline-block text-xs font-bold transition-transform duration-300 ease-out group-hover:-translate-x-1">
+          <span className="inline-block text-xl font-bold transition-transform duration-300 ease-out group-hover:-translate-x-1">
             &lt;&lt;
           </span>
 
@@ -75,7 +75,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
           </span>
         </button>
 
-        <h1 className="orbitron text-base sm:text-xl text-[#A020F0] cyber-text-glow tracking-wider text-center truncate px-1 flex-1 min-w-0">
+        <h1 className="orbitron text-3xl sm:text-xl text-[#A020F0] cyber-text-glow tracking-wider text-center truncate px-1 flex-1 min-w-0">
           {title}
         </h1>
 

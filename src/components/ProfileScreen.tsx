@@ -64,7 +64,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate }) => 
           >
             {/* Avatar Section */}
             <div className="cyber-border rounded-lg bg-[#050508] p-4 sm:p-6 flex flex-col items-center space-y-6">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto">
+              <div className="relative w-32 h-33 sm:w-40 sm:h-40 mx-auto">
                 <div className="absolute inset-0 cyber-border rounded-full bg-gradient-to-br from-[#A020F0] to-[#00E0FF] p-2">
                   <div className="w-full h-full bg-[#050508] rounded-full flex items-center justify-center relative">
                     <Logo width={90} height={90} className="glowing-logo sm:w-[110px] sm:h-[110px]" />
@@ -74,11 +74,11 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate }) => 
 
               {/* Personal Info */}
               <div className="w-full space-y-2 sm:space-y-3 jetbrains text-center">
-                <h2 className="orbitron text-lg sm:text-xl text-[#A020F0] cyber-text-glow">
+                <h2 className="orbitron text-2xl sm:text-xl text-[#A020F0] cyber-text-glow">
                   {t("profile.name")}
                 </h2>
-                <div className="text-[#00E0FF] text-sm sm:text-base">{t("profile.role")}</div>
-                <div className="text-[#0FF4F8] text-xs sm:text-sm">{t("profile.location")}</div>
+                <div className="text-[#00E0FF] text-xl sm:text-base">{t("profile.role")}</div>
+                <div className="text-[#0FF4F8] text-lg sm:text-sm">{t("profile.location")}</div>
               </div>
             </div>
 
@@ -92,9 +92,9 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate }) => 
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.8 + index * 0.1, duration: 0.3 }}
                 >
-                  <div className="text-xl sm:text-2xl mt-1 sm:mt-2">{stat.icon}</div>
-                  <div className="jetbrains text-base sm:text-lg text-[#00E0FF] cyber-text-glow">{stat.value}</div>
-                  <div className="jetbrains text-[10px] sm:text-xs text-[#0FF4F8]">{t(`profile.stats.${stat.key}`)}</div>
+                  <div className="text-5xl sm:text-2xl mt-1 sm:mt-2">{stat.icon}</div>
+                  <div className="jetbrains text-2xl sm:text-lg text-[#00E0FF] cyber-text-glow">{stat.value}</div>
+                  <div className="jetbrains text-lg sm:text-sm text-[#0FF4F8]">{t(`profile.stats.${stat.key}`)}</div>
                 </motion.div>
               ))}
             </div>
@@ -116,7 +116,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate }) => 
           transition={{ delay: 1, duration: 0.6 }}
         >
           <div className="cyber-border rounded-lg bg-[#050508] p-4 sm:p-6">
-            <h2 className="orbitron text-lg sm:text-xl text-[#A020F0] cyber-text-glow mb-4 tracking-wider text-center md:text-left">
+            <h2 className="orbitron text-2xl sm:text-xl text-[#A020F0] cyber-text-glow mb-4 tracking-wider text-center md:text-left">
               {t("profile.achievements")}
             </h2>
             {/* На мобилках 1 колонка, на планшетах 2-3, на десктопе 6 */}
@@ -134,14 +134,14 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, onNavigate }) => 
                     scale:   { duration: 0.12 }
                   }}
                 >
-                  <div className="text-xl sm:text-2xl mb-2">{a.icon}</div>
+                  <div className="text-3xl sm:text-2xl mb-2">{a.icon}</div>
                   <div 
-                    className="jetbrains text-xs sm:text-sm cyber-text-glow mb-1"
+                    className="jetbrains text-xl sm:text-sm cyber-text-glow mb-1"
                     style={{ color: a.color }}
                   >
                     {t(`profile.achievements_list.${a.key}.title`)}
                   </div>
-                  <div className="jetbrains text-[10px] sm:text-xs text-[#0FF4F8] opacity-80">
+                  <div className="jetbrains text-lg sm:text-sm text-[#0FF4F8] opacity-80">
                     {t(`profile.achievements_list.${a.key}.description`)}
                   </div>
                 </motion.div>

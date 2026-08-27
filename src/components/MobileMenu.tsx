@@ -131,8 +131,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         className="
           relative
           flex
-          h-10
-          w-10
+          h-12
+          w-12
           shrink-0
           items-center
           justify-center
@@ -145,10 +145,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           active:scale-95
         "
       >
-        <span className="flex flex-col gap-[4px]">
-          <span className="h-[1.5px] w-4 bg-current" />
-          <span className="h-[1.5px] w-4 bg-current" />
-          <span className="h-[1.5px] w-4 bg-current" />
+        <span className="flex flex-col gap-[5px]">
+          <span className="h-[1.75px] w-7 bg-current" />
+          <span className="h-[1.75px] w-7 bg-current" />
+          <span className="h-[1.75px] w-7 bg-current" />
         </span>
       </button>
 
