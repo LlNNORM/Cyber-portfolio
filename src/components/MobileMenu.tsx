@@ -1,165 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Terminal,
+  User,
+  Zap,
+  Briefcase,
+  Mail,
+  X,
+  ChevronRight,
+} from 'lucide-react';
+
+import type { Screen } from '../types/screens';
 import LanguageSwitcher from './LanguageSwitcher';
 
-export type MobileMenuScreen =
-  | 'boot'
-  | 'terminal'
-  | 'profile'
-  | 'skills'
-  | 'projects'
-  | 'contacts';
-
 interface MobileMenuProps {
-  currentScreen?: MobileMenuScreen;
-  onNavigate: (screen: MobileMenuScreen) => void;
+  currentScreen: Screen;
+  onNavigate: (screen: Screen) => void;
 }
 
 interface MenuItem {
-  id: MobileMenuScreen;
+  id: Exclude<Screen, 'boot'>;
   label: string;
   description: string;
-  icon: React.ReactNode;
+  icon: React.ElementType;
 }
 
-const menuItems: MenuItem[] = [
+const MENU_ITEMS: MenuItem[] = [
   {
     id: 'terminal',
     label: 'TERMINAL',
-    description: 'System console',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M4 5.5C4 4.672 4.672 4 5.5 4h13C19.328 4 20 4.672 20 5.5v13c0 .828-.672 1.5-1.5 1.5h-13C4.672 20 4 19.328 4 18.5v-13Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-        <path
-          d="m8 9 3 3-3 3M13 15h3"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    description: 'SYSTEM CONSOLE',
+    icon: Terminal,
   },
-
   {
     id: 'profile',
     label: 'PROFILE',
-    description: 'Identity data',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle
-          cx="12"
-          cy="8"
-          r="3.2"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-        <path
-          d="M5.5 19c.8-3.1 3.1-5 6.5-5s5.7 1.9 6.5 5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
+    description: 'IDENTITY DATA',
+    icon: User,
   },
-
   {
     id: 'skills',
     label: 'SKILLS',
-    description: 'Technical modules',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M4 17.5 8.5 13 12 16.5 19.5 9"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 9h3.5v3.5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    description: 'TECHNICAL MODULES',
+    icon: Zap,
   },
-
   {
     id: 'projects',
     label: 'PROJECTS',
-    description: 'Selected works',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M4.5 6.5h6l1.7 2h7.3v9.8c0 .66-.54 1.2-1.2 1.2H5.7c-.66 0-1.2-.54-1.2-1.2V6.5Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M4.5 10h15"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-      </svg>
-    ),
+    description: 'SELECTED WORKS',
+    icon: Briefcase,
   },
-
   {
     id: 'contacts',
     label: 'CONTACTS',
-    description: 'Communication links',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect
-          x="4"
-          y="5"
-          width="16"
-          height="14"
-          rx="2"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-        <path
-          d="m6.5 8 5.5 4 5.5-4"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    description: 'COMMUNICATION LINKS',
+    icon: Mail,
   },
 ];
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({
+const MobileMenu: React.FC<MobileMenuProps> = ({
   currentScreen,
   onNavigate,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
   const closeMenu = () => {
     setIsOpen(false);
   };
 
-  const handleNavigate = (screen: MobileMenuScreen) => {
+  const handleNavigate = (screen: Exclude<Screen, 'boot'>) => {
     closeMenu();
 
-    if (screen === currentScreen) return;
+    if (screen === currentScreen) {
+      return;
+    }
 
     onNavigate(screen);
   };
 
+  /*
+   * Закрытие по Escape.
+   */
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -167,27 +94,41 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
       }
     };
 
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
+  /*
+   * Блокируем прокрутку страницы,
+   * пока открыт fullscreen menu.
+   */
+  useEffect(() => {
+    if (!isOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
   return (
-    <div className="relative md:hidden">
-      {/* Burger button */}
+    <>
+      {/* Burger */}
       <button
         type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+        aria-label="Open navigation"
         aria-expanded={isOpen}
-        className={`
-          group
+        onClick={() => setIsOpen(true)}
+        className="
           relative
           flex
           h-10
@@ -196,119 +137,129 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           items-center
           justify-center
           rounded-lg
-          border
+          cyber-border
+          text-[#00E0FF]
           transition-all
           duration-300
-          cyber-border
-          ${
-            isOpen
-              ? 'border-[#A020F0] bg-[#A020F0]/15 text-[#A020F0] cyber-text-glow'
-              : 'text-[#00E0FF] hover:bg-[#A020F0]/10'
-          }
-        `}
+          hover:bg-[#A020F0]/10
+          active:scale-95
+        "
       >
-        <span className="absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[#00E0FF]/5" />
-
-        <span className="relative flex flex-col gap-[4px]">
-          <span
-            className={`block h-[1.5px] w-4 bg-current transition-all duration-300 ${
-              isOpen ? 'translate-y-[5.5px] rotate-45' : ''
-            }`}
-          />
-
-          <span
-            className={`block h-[1.5px] w-4 bg-current transition-all duration-300 ${
-              isOpen ? 'opacity-0' : ''
-            }`}
-          />
-
-          <span
-            className={`block h-[1.5px] w-4 bg-current transition-all duration-300 ${
-              isOpen ? '-translate-y-[5.5px] -rotate-45' : ''
-            }`}
-          />
+        <span className="flex flex-col gap-[4px]">
+          <span className="h-[1.5px] w-4 bg-current" />
+          <span className="h-[1.5px] w-4 bg-current" />
+          <span className="h-[1.5px] w-4 bg-current" />
         </span>
       </button>
 
       <AnimatePresence>
         {isOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 z-[70] bg-black/50 backdrop-blur-[3px]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closeMenu}
+          <motion.div
+            ref={menuRef}
+            className="
+              fixed
+              inset-0
+              z-[9999]
+              flex
+              h-[100dvh]
+              w-screen
+              flex-col
+              overflow-hidden
+              bg-[#050508]
+            "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
+          >
+            {/* Background */}
+            <div className="pointer-events-none absolute inset-0 cyber-grid opacity-60" />
+
+            <div
+              className="
+                pointer-events-none
+                absolute
+                inset-0
+                opacity-30
+                bg-[radial-gradient(circle_at_top_right,rgba(160,32,240,0.18),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(0,224,255,0.10),transparent_35%)]
+              "
             />
 
-            {/* Menu panel */}
-            <motion.div
+            {/* Content */}
+            <div
               className="
-                fixed
-                right-3
-                top-[4.25rem]
-                z-[80]
-                w-[min(88vw,360px)]
-                overflow-hidden
-                rounded-xl
-                border
-                border-[#A020F0]/50
-                bg-[#09090f]/95
-                shadow-[0_0_30px_rgba(160,32,240,0.18)]
-                backdrop-blur-xl
+                relative
+                z-10
+                flex
+                h-full
+                flex-col
+                px-4
+                pb-5
+                pt-4
+                sm:px-6
               "
-              initial={{
-                opacity: 0,
-                y: -15,
-                scale: 0.96,
-                transformOrigin: 'top right',
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                scale: 1,
-              }}
-              exit={{
-                opacity: 0,
-                y: -10,
-                scale: 0.97,
-              }}
-              transition={{
-                duration: 0.22,
-                ease: 'easeOut',
-              }}
-              onClick={(event) => event.stopPropagation()}
             >
-              {/* Top line */}
-              <div className="relative px-4 pt-4 pb-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="jetbrains text-[10px] uppercase tracking-[0.28em] text-[#00E0FF]/60">
-                      SYSTEM MENU
-                    </div>
-
-                    <div className="mt-1 orbitron text-sm tracking-[0.18em] text-[#A020F0] cyber-text-glow">
-                      NAVIGATION
-                    </div>
+              {/* Header */}
+              <div className="flex shrink-0 items-center justify-between">
+                <div>
+                  <div className="jetbrains text-[9px] uppercase tracking-[0.28em] text-[#00E0FF]/60">
+                    PERSONALITY OS
                   </div>
 
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#00E0FF] shadow-[0_0_8px_#00E0FF]" />
-                    <span className="jetbrains text-[9px] uppercase tracking-widest text-[#00E0FF]/70">
-                      ONLINE
-                    </span>
+                  <div className="mt-1 orbitron text-lg tracking-[0.16em] text-[#A020F0] cyber-text-glow">
+                    SYSTEM MENU
                   </div>
                 </div>
 
-                <div className="mt-3 h-px w-full bg-gradient-to-r from-[#A020F0]/60 via-[#00E0FF]/20 to-transparent" />
+                <button
+                  type="button"
+                  onClick={closeMenu}
+                  aria-label="Close navigation"
+                  className="
+                    flex
+                    h-11
+                    w-11
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-lg
+                    border
+                    border-[#A020F0]/50
+                    bg-[#A020F0]/10
+                    text-[#A020F0]
+                    shadow-[0_0_18px_rgba(160,32,240,0.12)]
+                    transition-all
+                    duration-300
+                    hover:bg-[#A020F0]/20
+                    hover:text-[#00E0FF]
+                    active:scale-95
+                  "
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* System status */}
+              <div className="mt-4 flex items-center justify-between border-y border-[#00E0FF]/10 py-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#00ff41] shadow-[0_0_8px_#00ff41]" />
+
+                  <span className="jetbrains text-[9px] tracking-[0.18em] text-[#00E0FF]">
+                    NAVIGATION ONLINE
+                  </span>
+                </div>
+
+                <span className="jetbrains text-[9px] tracking-widest text-[#A020F0]/70">
+                  v1.0
+                </span>
               </div>
 
               {/* Navigation */}
-              <nav className="px-3 pb-3">
-                <div className="space-y-1.5">
-                  {menuItems.map((item, index) => {
-                    const isActive = item.id === currentScreen;
+              <nav className="mt-4 overflow-y-auto overflow-x-hidden pr-1">
+                <div className="space-y-2">
+                  {MENU_ITEMS.map((item, index) => {
+                    const Icon = item.icon;
+                    const active = item.id === currentScreen;
 
                     return (
                       <motion.button
@@ -323,122 +274,147 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                           items-center
                           gap-3
                           overflow-hidden
-                          rounded-lg
+                          rounded-xl
                           border
                           px-3
-                          py-3
+                          py-3.5
                           text-left
                           transition-all
                           duration-300
                           ${
-                            isActive
-                              ? 'border-[#A020F0]/60 bg-[#A020F0]/10'
-                              : 'border-transparent hover:border-[#00E0FF]/20 hover:bg-[#00E0FF]/5'
+                            active
+                              ? 'border-[#A020F0]/70 bg-[#A020F0]/10'
+                              : 'border-[#00E0FF]/10 bg-[#00E0FF]/[0.025] hover:border-[#00E0FF]/30 hover:bg-[#00E0FF]/5'
                           }
                         `}
-                        initial={{ opacity: 0, x: 12 }}
+                        initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{
-                          delay: 0.03 * index,
-                          duration: 0.2,
+                          delay: 0.05 + index * 0.055,
+                          duration: 0.25,
+                          ease: 'easeOut',
                         }}
                       >
-                        {/* Active indicator */}
+                        {active && (
+                          <motion.div
+                            layoutId="mobile-menu-active"
+                            className="
+                              absolute
+                              left-0
+                              top-1/2
+                              h-10
+                              w-[2px]
+                              -translate-y-1/2
+                              bg-[#A020F0]
+                              shadow-[0_0_12px_#A020F0]
+                            "
+                          />
+                        )}
+
                         <div
                           className={`
-                            absolute left-0 top-1/2 h-7 w-[2px] -translate-y-1/2
-                            transition-all duration-300
+                            flex
+                            h-11
+                            w-11
+                            shrink-0
+                            items-center
+                            justify-center
+                            rounded-lg
+                            border
+                            transition-all
+                            duration-300
                             ${
-                              isActive
-                                ? 'bg-[#A020F0] shadow-[0_0_10px_#A020F0]'
-                                : 'bg-transparent'
-                            }
-                          `}
-                        />
-
-                        {/* Hover glow */}
-                        <div className="absolute inset-0 -z-0 bg-gradient-to-r from-[#A020F0]/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                        <div
-                          className={`
-                            relative z-10
-                            flex h-9 w-9 shrink-0 items-center justify-center rounded-md border
-                            transition-all duration-300
-                            ${
-                              isActive
-                                ? 'border-[#A020F0]/40 bg-[#A020F0]/10 text-[#A020F0] shadow-[0_0_12px_rgba(160,32,240,0.12)]'
-                                : 'border-[#00E0FF]/15 bg-[#00E0FF]/5 text-[#00E0FF]/80 group-hover:border-[#00E0FF]/30 group-hover:text-[#00E0FF]'
+                              active
+                                ? 'border-[#A020F0]/50 bg-[#A020F0]/10 text-[#A020F0]'
+                                : 'border-[#00E0FF]/15 bg-[#00E0FF]/5 text-[#00E0FF] group-hover:border-[#00E0FF]/30'
                             }
                           `}
                         >
-                          <div className="h-4.5 w-4.5">
-                            {item.icon}
-                          </div>
+                          <Icon size={18} />
                         </div>
 
-                        <div className="relative z-10 min-w-0 flex-1">
+                        <div className="min-w-0 flex-1">
                           <div
                             className={`
-                              jetbrains text-xs font-bold tracking-[0.12em] transition-colors duration-300
+                              orbitron
+                              text-xs
+                              tracking-[0.14em]
+                              transition-colors
                               ${
-                                isActive
+                                active
                                   ? 'text-[#A020F0] cyber-text-glow'
-                                  : 'text-[#00E0FF] group-hover:text-[#A020F0]'
+                                  : 'text-[#00E0FF]'
                               }
                             `}
                           >
                             {item.label}
                           </div>
 
-                          <div className="mt-0.5 jetbrains text-[9px] tracking-wide text-gray-500">
+                          <div className="mt-1 jetbrains text-[9px] tracking-[0.12em] text-gray-500">
                             {item.description}
                           </div>
                         </div>
 
-                        <div
+                        <ChevronRight
+                          size={17}
                           className={`
-                            relative z-10 text-xs transition-all duration-300
+                            shrink-0
+                            transition-all
+                            duration-300
                             ${
-                              isActive
+                              active
                                 ? 'translate-x-0 text-[#A020F0]'
-                                : '-translate-x-1 text-gray-600 opacity-0 group-hover:translate-x-0 group-hover:text-[#00E0FF] group-hover:opacity-100'
+                                : '-translate-x-1 text-[#00E0FF]/30 group-hover:translate-x-0 group-hover:text-[#00E0FF]'
                             }
                           `}
-                        >
-                          →
-                        </div>
+                        />
                       </motion.button>
                     );
                   })}
                 </div>
               </nav>
 
-              {/* Language */}
-              <div className="border-t border-[#A020F0]/15 px-4 py-3">
+              {/* Language section */}
+              <div className="mt-4 shrink-0">
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="jetbrains text-[9px] uppercase tracking-[0.2em] text-gray-500">
-                    Interface language
-                  </span>
+                  <div>
+                    <div className="jetbrains text-[9px] uppercase tracking-[0.2em] text-gray-500">
+                      INTERFACE LANGUAGE
+                    </div>
 
-                  <span className="jetbrains text-[9px] text-[#00E0FF]/50">
-                    LANG
-                  </span>
+                    <div className="mt-1 jetbrains text-[8px] uppercase tracking-[0.18em] text-[#00E0FF]/50">
+                      Swipe to change
+                    </div>
+                  </div>
                 </div>
 
-                <div className="rounded-lg border border-[#00E0FF]/10 bg-[#00E0FF]/5 p-1">
-                  <LanguageSwitcher />
+                <div className="
+                  rounded-xl
+                  border
+                  border-[#A020F0]/30
+                  bg-[#0a0a14]
+                  p-1
+                  shadow-[0_0_20px_rgba(160,32,240,0.08)]
+                ">
+                  {/* <LanguageSwitcher /> */}
+                                <motion.div
+                className="shrink-0 border-t border-[#A020F0]/20 pt-4"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.35,
+                  duration: 0.3,
+                }}
+              >
+                <LanguageSwitcher variant="mobile-menu" />
+              </motion.div>
                 </div>
               </div>
-
-              {/* Decorative footer */}
-              <div className="relative h-5 overflow-hidden border-t border-[#00E0FF]/10">
-                <div className="absolute inset-0 opacity-30 bg-[repeating-linear-gradient(90deg,transparent_0px,transparent_5px,#00E0FF_5px,#00E0FF_6px)]" />
-              </div>
-            </motion.div>
-          </>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 };
 
