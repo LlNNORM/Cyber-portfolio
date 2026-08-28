@@ -103,18 +103,22 @@ const translations = {
 
     // Profile Screen
     profile: {
-      title: "NEUROPROFILE",
-      back: "BACK TO TERMINAL",
-      status: "Status",
-      online: "ONLINE",
-      name: "IVAN ERSHOV",
-      role: "Frontend Developer",
-      location: "Neural Interface Specialist",
-      years_experience: "Years of Experience",
-      projects_completed: "Projects Completed",
-      coffee_consumed: "Coffee Consumed",
-      bugs_fixed: "Bugs Fixed",
-      achievements: "ACHIEVEMENTS & SPECIALIZATIONS",
+        title: "NEURAL PROFILE",
+        back: "BACK TO TERMINAL",
+        status: "Status",
+        online: "ONLINE",
+        name: "IVAN ERSHOV",
+        role: "Frontend Developer",
+        location: "Neural Interface Specialist",
+        years_experience: "Years of experience",
+        projects_completed: "Completed projects",
+        coffee_consumed: "Coffee consumed",
+        bugs_fixed: "Bugs fixed",
+
+        achievements: "ACHIEVEMENTS & SPECIALIZATIONS",
+
+        hover_to_interact: "HOVER TO INTERACT",
+        tap_to_interact: "TAP TO INTERACT",
       stats: {
         exp: "Years of Experience",
         projects: "Projects Completed",
@@ -351,14 +355,18 @@ const translations = {
             back: "НАЗАД К ТЕРМИНАЛУ",
             status: "Статус",
             online: "ОНЛАЙН",
-            name: "ИВАН ЕРШОВ", // имя не переводится
+            name: "ИВАН ЕРШОВ",
             role: "Фронтенд-разработчик",
             location: "Специалист по нейроинтерфейсам",
             years_experience: "Лет опыта",
             projects_completed: "Завершенных проектов",
             coffee_consumed: "Выпито кофе",
             bugs_fixed: "Исправлено багов",
+
             achievements: "ДОСТИЖЕНИЯ И СПЕЦИАЛИЗАЦИИ",
+
+            hover_to_interact: "НАВЕДИТЕ ДЛЯ ВЗАИМОДЕЙСТВИЯ",
+            tap_to_interact: "НАЖМИТЕ ДЛЯ ВЗАИМОДЕЙСТВИЯ",
             stats: {
               exp: "Лет опыта",
               projects: "Завершенных проектов",
