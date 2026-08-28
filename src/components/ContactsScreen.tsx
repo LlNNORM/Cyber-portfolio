@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { MapPin, Calendar, ExternalLink, Copy, Check } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
-import { FloatingBackground } from './FloatingBackground';
+import { FloatingBackground } from './FloatingElement';
 import { ScreenHeader } from './ScreenHeader';
 import { CONTACTS_DATA } from '../data/contacts';
 import type { ContactItem } from '../types/contacts';

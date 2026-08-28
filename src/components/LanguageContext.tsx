@@ -107,7 +107,7 @@ const translations = {
       back: "BACK TO TERMINAL",
       status: "Status",
       online: "ONLINE",
-      name: "LINNORM",
+      name: "IVAN ERSHOV",
       role: "Frontend Developer",
       location: "Neural Interface Specialist",
       years_experience: "Years of Experience",
@@ -351,7 +351,7 @@ const translations = {
             back: "НАЗАД К ТЕРМИНАЛУ",
             status: "Статус",
             online: "ОНЛАЙН",
-            name: "LINNORM", // имя не переводится
+            name: "ИВАН ЕРШОВ", // имя не переводится
             role: "Фронтенд-разработчик",
             location: "Специалист по нейроинтерфейсам",
             years_experience: "Лет опыта",
