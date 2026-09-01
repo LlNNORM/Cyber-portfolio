@@ -56,7 +56,7 @@ export const useTerminal = ({
   const [commandHistory, setCommandHistory] =
     useState<string[]>([]);
 
-  const [historyIndex, setHistoryIndex] =
+  const [, setHistoryIndex] =
     useState(-1);
 
   const [showSuggestions, setShowSuggestions] =
