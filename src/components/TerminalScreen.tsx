@@ -43,10 +43,10 @@ const TerminalScreen: FC<
    */
   const initialHistory = useMemo(
     () => [
-      "╔═══════════════════════════════════════════╗",
+      "╔═══════════════════════════════════╗",
       t("terminal.bannerLine1"),
       t("terminal.bannerLine2"),
-      "╚═══════════════════════════════════════════╝",
+      "╚═══════════════════════════════════╝",
       "",
       t("terminal.initSuccess"),
       t("terminal.neuralEstablished"),

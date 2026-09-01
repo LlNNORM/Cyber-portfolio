@@ -47,9 +47,9 @@ const translations = {
     // 'terminal.invalid_language': 'Invalid language. Use: lang en | lang ru',
     terminal: {
       bannerLine1:
-        "║                    PersonalityOS v1.0....................║",
+        "║                    PersonalityOS v1.0.............║",
       bannerLine2:
-        "║                  Neural Interface Active...............║",
+        "║                  Neural Interface Active........║",
       initSuccess: "◉ System initialized successfully",
       neuralEstablished: "◉ Neural pathways established",
       helpHint: '◉ Type "help" or use TAB for autocomplete',
