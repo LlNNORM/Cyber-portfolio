@@ -14,34 +14,18 @@ import type {
 } from "../types/commands";
 
 interface TerminalInputProps {
-  inputRef: RefObject<
-    HTMLInputElement | null
-  >;
-
+  inputRef: RefObject<HTMLInputElement | null>;
   value: string;
-
   suggestions: TerminalCommand[];
-
   selectedSuggestion: number;
-
   showSuggestions: boolean;
-
   onChange: (value: string) => void;
-
-  onKeyDown: (
-    event: KeyboardEvent<HTMLInputElement>
-  ) => void;
-
+  onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
   onFocus: () => void;
-
-  onSuggestionSelect: (
-    command: TerminalCommand
-  ) => void;
+  onSuggestionSelect: (command: TerminalCommand) => void;
 }
 
-const TerminalInput: FC<
-  TerminalInputProps
-> = ({
+const TerminalInput: FC<TerminalInputProps> = ({
   inputRef,
   value,
   suggestions,
@@ -52,12 +36,8 @@ const TerminalInput: FC<
   onFocus,
   onSuggestionSelect,
 }) => {
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    onChange(
-      event.target.value
-    );
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChange(event.target.value);
   };
 
   return (
@@ -100,21 +80,18 @@ const TerminalInput: FC<
           "
           placeholder="Enter command... (TAB for autocomplete)"
           autoComplete="off"
+          autoCapitalize="none"
+          autoCorrect="off"
           spellCheck={false}
+          inputMode="text"
         />
       </div>
 
       <TerminalAutocomplete
         suggestions={suggestions}
-        selectedSuggestion={
-          selectedSuggestion
-        }
-        showSuggestions={
-          showSuggestions
-        }
-        onSelect={
-          onSuggestionSelect
-        }
+        selectedSuggestion={selectedSuggestion}
+        showSuggestions={showSuggestions}
+        onSelect={onSuggestionSelect}
       />
     </div>
   );

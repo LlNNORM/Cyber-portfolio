@@ -334,7 +334,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({
                     {/* Title */}
                     <div className="flex flex-col justify-center text-left md:text-center">
                       <div
-                        className="jetbrains text-xl sm:text-sm cyber-text-glow mb-1"
+                        className="jetbrains С cyber-text-glow mb-1"
                         style={{
                           color: a.color,
                         }}
