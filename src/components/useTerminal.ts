@@ -72,6 +72,14 @@ export const useTerminal = ({
     }
   }, [suggestions.length]);
 
+  useEffect(() => {
+  setHistory((prevHistory) => {
+    // Заменяем старое интро/баннер на новое, сохраняя команды пользователя
+    // Если история ещё не менялась (длины совпадают), просто обновляем initialHistory
+    return [...initialHistory, ...prevHistory.slice(initialHistory.length)];
+  });
+}, [initialHistory]);
+
   // ==========================================================
   // RESET
   // ==========================================================
