@@ -54,7 +54,7 @@ const TerminalScreen: FC<TerminalScreenProps> = ({ onNavigate }) => {
   const initialHistory = useMemo(() => { 
     const introText = t("terminal.introText"); 
 
-    return isMobile ? introText : [...banner, ...introText]; 
+    return isMobile ? [introText] : [...banner, ...introText]; 
   }, [t, isMobile, banner]); 
 
   /* 
