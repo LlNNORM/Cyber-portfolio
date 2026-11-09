@@ -400,23 +400,52 @@ const ElectricSpider: React.FC<
           ? 60
           : 140;
 
+      const minLength = 50;
+      const maxLength = 300;
+
+      const randomLength = () =>
+        Math.random() *
+          (maxLength - minLength) +
+        minLength;
+
       for (let i = 0; i < count; i++) {
-        const minLength = 50;
-        const maxLength = 300;
-
-        const length =
-          Math.random() *
-            (maxLength - minLength) +
-          minLength;
-
         tentacles.push(
           createTentacle(
             Math.random() * width,
             Math.random() * height,
-            length,
+            randomLength(),
             30
           )
         );
+      }
+
+      // Дополнительные якоря в углах экрана,
+      // где при равномерном разбросе точек мало.
+      const cornerCount = Math.round(
+        count * 0.1
+      );
+      const zoneW = width * 0.18;
+      const zoneH = height * 0.18;
+
+      for (let c = 0; c < 4; c++) {
+        const right = c % 2 === 1;
+        const bottom = c >= 2;
+
+        for (let i = 0; i < cornerCount; i++) {
+          // Квадрат даёт плотность, растущую к самому углу
+          const rx = Math.pow(Math.random(), 1.5) * zoneW;
+          const ry = Math.pow(Math.random(), 1.5) * zoneH;
+
+          tentacles.push(
+            createTentacle(
+              right ? width - rx : rx,
+              bottom ? height - ry : ry,
+              // Длиннее, чтобы доставать до курсора из угла
+              randomLength() + 80,
+              30
+            )
+          );
+        }
       }
     };
 
