@@ -32,45 +32,38 @@ export const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-hidden"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{
         opacity: [1, 1, 0],
-        transition: { duration: 1.3, times: [0, 0.85, 1], ease: 'easeOut' }
+        transition: { duration: 1, times: [0, 0.65, 1], ease: 'easeOut' }
       }}
       onClick={onClose}
     >
-      {/* Окно модалки с эффектом ЭЛТ и однородной светящейся точкой при схлопывании */}
+      {/* Вспышка-точка: отдельный лёгкий слой, анимируются только opacity/transform */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -ml-2 -mt-2 h-4 w-4 rounded-full bg-[#CFFCFF]"
+        style={{ boxShadow: '0 0 16px #00E0FF, 0 0 32px #00E0FF', willChange: 'transform, opacity' }}
+        initial={{ opacity: 0, scale: 0 }}
+        exit={{
+          opacity: [0, 0, 1, 1, 0],
+          scale: [0.3, 0.3, 1.2, 1, 0],
+          transition: { duration: 1, times: [0, 0.4, 0.55, 0.8, 1], ease: 'easeOut' }
+        }}
+      />
+      {/* Окно модалки: схлопывание в линию и точку только через transform + opacity */}
       <motion.div
         className="cyber-border bg-[#050508] rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto cyber-scroll relative flex flex-col origin-center"
+        style={{ willChange: 'transform, opacity' }}
         initial={{ y: 30, scale: 0.95, opacity: 0 }}
         animate={{ y: 0, scale: 1, opacity: 1 }}
         exit={{
-          scaleX: [1, 1.05, 0.012, 0.012, 0],
-          scaleY: [1, 0.004, 0.012, 0.012, 0],
-          borderRadius: ['12px', '4px', '50%', '50%', '50%'],
-          backgroundColor: ['#050508', '#050508', '#00E0FF', '#00E0FF', '#00E0FF'],
-          opacity: [1, 1, 1, 0.7, 0],
-          filter: [
-            'brightness(1) contrast(100%) blur(0px)',
-            'brightness(2.5) contrast(200%) blur(0.5px)',
-            'brightness(6) contrast(200%) blur(0px)',
-            'brightness(3) contrast(150%) blur(2px)',
-            'brightness(0) contrast(100%) blur(8px)'
-          ],
-          boxShadow: [
-            '0 0 15px rgba(15, 244, 248, 0.2)',
-            '0 0 40px rgba(255, 255, 255, 0.9), 0 0 80px rgba(15, 244, 248, 0.8)',
-            '0 0 50px #00E0FF, 0 0 100px #00E0FF',
-            '0 0 30px #00E0FF, 0 0 60px #00E0FF',
-            '0 0 0px rgba(0,0,0,0)'
-          ],
-          transition: {
-            duration: 1.25,
-            times: [0, 0.28, 0.48, 0.8, 1],
-            ease: 'easeInOut'
-          }
+          scaleX: [1, 1.04, 0.02],
+          scaleY: [1, 0.01, 0.01],
+          opacity: [1, 1, 0],
+          transition: { duration: 0.9, times: [0, 0.55, 1], ease: 'easeInOut' }
         }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
