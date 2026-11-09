@@ -69,14 +69,14 @@ const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
       >
         {/* Dragon Logo */}
         <motion.div 
-          className="mx-auto w-32 h-32 relative"
+          className="mx-auto w-32 h-32 relative will-change-transform"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
+          transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="absolute inset-0 cyber-border rounded-full bg-gradient-to-br from-[#A020F0] to-[#00E0FF] p-1">
             <div className="w-full h-full bg-[#050508] rounded-full flex items-center justify-center">
-              <Logo   width={100} height={100} className="glowing-logo" />
+              <Logo width={100} height={100} className="glowing-logo block shrink-0" />
             </div>
           </div>
           <div className="absolute inset-0 cyber-glow rounded-full"></div>
