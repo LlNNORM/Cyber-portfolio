@@ -7,6 +7,7 @@ import type {
 
 import { ChevronRight } from "lucide-react";
 
+import { useLanguage } from "./useLanguage";
 import TerminalAutocomplete from "./TerminalAutocomplete";
 
 import type {
@@ -36,6 +37,7 @@ const TerminalInput: FC<TerminalInputProps> = ({
   onFocus,
   onSuggestionSelect,
 }) => {
+  const { t } = useLanguage();
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
@@ -78,7 +80,7 @@ const TerminalInput: FC<TerminalInputProps> = ({
             caret-[#00E0FF]
             terminal-cursor
           "
-          placeholder="Enter command... (TAB for autocomplete)"
+          placeholder={t("terminal.inputPlaceholder")}
           autoComplete="off"
           autoCapitalize="none"
           autoCorrect="off"

@@ -12,6 +12,7 @@ import {
 
 import type { Screen } from '../types/screens';
 import LanguageSwitcher from './LanguageSwitcher';
+import { useLanguage } from './useLanguage';
 
 interface MobileMenuProps {
   currentScreen: Screen;
@@ -20,40 +21,28 @@ interface MobileMenuProps {
 
 interface MenuItem {
   id: Exclude<Screen, 'boot'>;
-  label: string;
-  description: string;
   icon: React.ElementType;
 }
 
 const MENU_ITEMS: MenuItem[] = [
   {
     id: 'terminal',
-    label: 'TERMINAL',
-    description: 'SYSTEM CONSOLE',
     icon: Terminal,
   },
   {
     id: 'profile',
-    label: 'PROFILE',
-    description: 'IDENTITY DATA',
     icon: User,
   },
   {
     id: 'skills',
-    label: 'SKILLS',
-    description: 'TECHNICAL MODULES',
     icon: Zap,
   },
   {
     id: 'projects',
-    label: 'PROJECTS',
-    description: 'SELECTED WORKS',
     icon: Briefcase,
   },
   {
     id: 'contacts',
-    label: 'CONTACTS',
-    description: 'COMMUNICATION LINKS',
     icon: Mail,
   },
 ];
@@ -62,6 +51,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   currentScreen,
   onNavigate,
 }) => {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -125,7 +115,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       {/* Burger */}
       <button
         type="button"
-        aria-label="Open navigation"
+        aria-label={t('menu.openNavigation')}
         aria-expanded={isOpen}
         onClick={() => setIsOpen(true)}
         className="
@@ -202,19 +192,19 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               {/* Header */}
               <div className="flex shrink-0 items-center justify-between">
                 <div>
-                  <div className="jetbrains text-[9px] uppercase tracking-[0.28em] text-[#00E0FF]/60">
+                  <div className="jetbrains text-xs uppercase tracking-[0.28em] text-[#00E0FF]/60">
                     PERSONALITY OS
                   </div>
 
-                  <div className="mt-1 orbitron text-lg tracking-[0.16em] text-[#A020F0] cyber-text-glow">
-                    SYSTEM MENU
+                  <div className="mt-1 orbitron text-2xl tracking-[0.16em] text-[#A020F0] cyber-text-glow">
+                    {t('menu.title')}
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={closeMenu}
-                  aria-label="Close navigation"
+                  aria-label={t('menu.closeNavigation')}
                   className="
                     flex
                     h-11
@@ -244,12 +234,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#00ff41] shadow-[0_0_8px_#00ff41]" />
 
-                  <span className="jetbrains text-[9px] tracking-[0.18em] text-[#00E0FF]">
-                    NAVIGATION ONLINE
+                  <span className="jetbrains text-sm tracking-[0.18em] text-[#00E0FF]">
+                    {t('menu.navigationOnline')}
                   </span>
                 </div>
 
-                <span className="jetbrains text-[9px] tracking-widest text-[#A020F0]/70">
+                <span className="jetbrains text-sm tracking-widest text-[#A020F0]/70">
                   v1.0
                 </span>
               </div>
@@ -337,7 +327,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                           <div
                             className={`
                               orbitron
-                              text-xs
+                              text-xl
                               tracking-[0.14em]
                               transition-colors
                               ${
@@ -347,11 +337,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                               }
                             `}
                           >
-                            {item.label}
+                            {t(`menu.${item.id}.label`)}
                           </div>
 
-                          <div className="mt-1 jetbrains text-[9px] tracking-[0.12em] text-gray-500">
-                            {item.description}
+                          <div className="mt-1 jetbrains text-sm tracking-[0.12em] text-gray-500">
+                            {t(`menu.${item.id}.description`)}
                           </div>
                         </div>
 
@@ -375,41 +365,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               </nav>
 
               {/* Language section */}
-              <div className="mt-4 shrink-0">
-                <div className="mb-2 flex items-center justify-between">
-                  <div>
-                    <div className="jetbrains text-[9px] uppercase tracking-[0.2em] text-gray-500">
-                      INTERFACE LANGUAGE
-                    </div>
-
-                    <div className="mt-1 jetbrains text-[8px] uppercase tracking-[0.18em] text-[#00E0FF]/50">
-                      Swipe to change
-                    </div>
-                  </div>
-                </div>
-
-                <div className="
-                  rounded-xl
-                  border
-                  border-[#A020F0]/30
-                  bg-[#0a0a14]
-                  p-1
-                  shadow-[0_0_20px_rgba(160,32,240,0.08)]
-                ">
-                  {/* <LanguageSwitcher /> */}
-                                <motion.div
-                className="shrink-0 border-t border-[#A020F0]/20 pt-4"
+              <motion.div
+                className="mt-4 shrink-0 border-t border-[#A020F0]/20 pt-4"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 0.35,
-                  duration: 0.3,
-                }}
+                transition={{ delay: 0.35, duration: 0.3 }}
               >
                 <LanguageSwitcher variant="mobile-menu" />
               </motion.div>
-                </div>
-              </div>
             </div>
           </motion.div>
         )}

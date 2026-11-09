@@ -30,11 +30,26 @@ const translations = {
     // 'terminal.command_not_found': 'Command not found. Type "help" for available commands.',
     // 'terminal.language_changed': 'Language changed to',
     // 'terminal.invalid_language': 'Invalid language. Use: lang en | lang ru',
+    menu: {
+      title: "SYSTEM MENU",
+      navigationOnline: "NAVIGATION ONLINE",
+      openNavigation: "Open navigation",
+      closeNavigation: "Close navigation",
+      interfaceLanguage: "Interface language",
+      terminal: { label: "TERMINAL", description: "SYSTEM CONSOLE" },
+      profile: { label: "PROFILE", description: "IDENTITY DATA" },
+      skills: { label: "SKILLS", description: "TECHNICAL MODULES" },
+      projects: { label: "PROJECTS", description: "SELECTED WORKS" },
+      contacts: { label: "CONTACTS", description: "COMMUNICATION LINKS" },
+    },
     terminal: {
+      neuralLoad: "Neural Load",
+      statusLabel: "Status",
+      statusActive: "ACTIVE",
       bannerLine1:
-        "║                    PersonalityOS v1.0........................................................║",
+        "║                    PersonalityOS v1.0.......................................................║",
       bannerLine2:
-        "║                  Neural Interface Active...................................................║",
+        "║                  Neural Interface Active..................................................║",
       introText: [
                 "Greetings, wanderer. You have loaded my personal interface.",
                 "Inside — my biography, projects, and technology stack.",
@@ -294,11 +309,26 @@ const translations = {
     },
 
     // Terminal Screen
+    menu: {
+      title: "СИСТЕМНОЕ МЕНЮ",
+      navigationOnline: "НАВИГАЦИЯ АКТИВНА",
+      openNavigation: "Открыть навигацию",
+      closeNavigation: "Закрыть навигацию",
+      interfaceLanguage: "Язык интерфейса",
+      terminal: { label: "ТЕРМИНАЛ", description: "СИСТЕМНАЯ КОНСОЛЬ" },
+      profile: { label: "ПРОФИЛЬ", description: "ДАННЫЕ ЛИЧНОСТИ" },
+      skills: { label: "НАВЫКИ", description: "ТЕХНИЧЕСКИЕ МОДУЛИ" },
+      projects: { label: "ПРОЕКТЫ", description: "ИЗБРАННЫЕ РАБОТЫ" },
+      contacts: { label: "КОНТАКТЫ", description: "КАНАЛЫ СВЯЗИ" },
+    },
     terminal: {
+      neuralLoad: "Нейронная нагрузка",
+      statusLabel: "Статус",
+      statusActive: "АКТИВЕН",
       bannerLine1:
-        "║                    PersonalityOS v1.0........................................................║",
+        "║                    PersonalityOS v1.0.......................................................║",
       bannerLine2:
-        "║                  Нейронный интерфейс активен...............................................║",
+        "║                  Нейронный интерфейс активен..............................................║",
       introText:       [ 
       "Приветствую, странник. Ты загрузил мой персональный интерфейс.", 
       "Внутри — моя биография, проекты и стек технологий.", 

@@ -95,9 +95,9 @@ const glitchVariants: Variants = {
 
   return (
     <div className="relative w-full h-screen bg-[#050508] overflow-hidden">
-      {/* Language switcher - visible on all screens except boot */}
+      {/* Language switcher - только десктоп, только экран терминала */}
       {currentScreen === 'terminal' && (
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 right-4 z-50 hidden sm:block">
           <LanguageSwitcher />
         </div>
       )}

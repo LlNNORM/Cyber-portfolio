@@ -1,10 +1,15 @@
 import type { FC } from "react";
 
+import { useLanguage } from "./useLanguage";
+
 import {
   TERMINAL_PROMPT,
 } from "../data/commands";
 
-const TerminalHeader: FC = () => (
+const TerminalHeader: FC = () => {
+  const { t } = useLanguage();
+
+  return (
   <div
     className="
       cyber-border
@@ -76,25 +81,26 @@ const TerminalHeader: FC = () => (
       "
     >
       <span>
-        Neural Load:{" "}
+        {t("terminal.neuralLoad")}:{" "}
         <span className="text-[#0FF4F8]">
           23%
         </span>
       </span>
 
       <span>
-        Status:{" "}
+        {t("terminal.statusLabel")}:{" "}
         <span
           className="
             text-[#00ff41]
             cyber-flicker
           "
         >
-          ACTIVE
+          {t("terminal.statusActive")}
         </span>
       </span>
     </div>
   </div>
-);
+  );
+};
 
 export default TerminalHeader;
