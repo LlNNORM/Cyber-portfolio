@@ -1,8 +1,8 @@
-import { useMemo, useRef } from "react"; 
+import { useEffect, useMemo, useRef, useState } from "react"; 
 import type { FC } from "react"; 
 import { motion } from "framer-motion"; 
 
-import { useLanguage } from "./LanguageContext"; 
+import { useLanguage } from "./useLanguage"; 
 import ElectricSpider from "./ElectricSpider"; 
 import CommandReference from "./CommandReference"; 
 import TerminalHeader from "./TerminalHeader"; 
@@ -27,9 +27,39 @@ interface TerminalScreenProps {
   ) => void; 
 } 
 
-const TerminalScreen: FC<TerminalScreenProps> = ({ onNavigate }) => { 
-  const { t } = useLanguage(); 
+const DESKTOP_QUERY = "(min-width: 768px)";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
+// Паук тяжёлый: рендерим его только на десктопе и без prefers-reduced-motion
+const useShowSpider = () => {
+  const [show, setShow] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return (
+      window.matchMedia(DESKTOP_QUERY).matches &&
+      !window.matchMedia(REDUCED_MOTION_QUERY).matches
+    );
+  });
+
+  useEffect(() => {
+    const desktop = window.matchMedia(DESKTOP_QUERY);
+    const reduced = window.matchMedia(REDUCED_MOTION_QUERY);
+    const update = () => setShow(desktop.matches && !reduced.matches);
+
+    desktop.addEventListener("change", update);
+    reduced.addEventListener("change", update);
+    return () => {
+      desktop.removeEventListener("change", update);
+      reduced.removeEventListener("change", update);
+    };
+  }, []);
+
+  return show;
+};
+
+const TerminalScreen: FC<TerminalScreenProps> = ({ onNavigate }) => { 
+  const { t, tArray } = useLanguage(); 
+
+  const showSpider = useShowSpider();
   const interfaceRef = useRef<HTMLDivElement>(null); 
   const inputRef = useRef<HTMLInputElement>(null); 
 
@@ -52,10 +82,10 @@ const TerminalScreen: FC<TerminalScreenProps> = ({ onNavigate }) => {
    * INITIAL TERMINAL HISTORY 
    */ 
   const initialHistory = useMemo(() => { 
-    const introText = t("terminal.introText"); 
+    const introText = tArray("terminal.introText"); 
 
-    return isMobile ? [introText] : [...banner, ...introText]; 
-  }, [t, isMobile, banner]); 
+    return isMobile ? introText : [...banner, ...introText]; 
+  }, [tArray, isMobile, banner]); 
 
   /* 
    * TERMINAL COMMANDS 
@@ -107,9 +137,7 @@ const TerminalScreen: FC<TerminalScreenProps> = ({ onNavigate }) => {
       " 
     > 
       {/* ELECTRIC SPIDER */} 
-      <div className="hidden md:block"> 
-        <ElectricSpider excludedAreaRef={interfaceRef} /> 
-      </div> 
+      {showSpider && <ElectricSpider excludedAreaRef={interfaceRef} />} 
 
       {/* MAIN INTERFACE */} 
       <motion.div 

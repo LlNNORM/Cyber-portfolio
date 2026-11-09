@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Logo from '../assets/dragon-logo.svg?react';
 import profileImg from '../assets/profile.webp';
 import profileImg3 from '../assets/profile3.webp';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 import { ScreenHeader } from './ScreenHeader';
 import {
   STATS_CONFIG,

@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { lazy, Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import BootScreen from './components/BootScreen';
 import TerminalScreen from './components/TerminalScreen';
-import ProfileScreen from './components/ProfileScreen';
-import ProjectsScreen from './components/ProjectsScreen';
-import ContactsScreen from './components/ContactsScreen';
-import SkillsScreen from './components/SkillsScreen';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { LanguageProvider } from './components/LanguageContext';
+const ProfileScreen = lazy(() => import('./components/ProfileScreen'));
+const ProjectsScreen = lazy(() => import('./components/ProjectsScreen'));
+const ContactsScreen = lazy(() => import('./components/ContactsScreen'));
+const SkillsScreen = lazy(() => import('./components/SkillsScreen'));
 import { DEFAULT_SKILLS } from './data/skills';
 import type { Screen } from './types/screens';
 
@@ -20,16 +20,32 @@ export function AppContent() {
     document.documentElement.classList.add('dark');
   }, []);
 
-  const handleScreenChange = (newScreen: Screen) => {
-    if (newScreen === currentScreen) return;
-    
+  const glitchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentScreenRef = useRef<Screen>(currentScreen);
+
+  useEffect(() => {
+    currentScreenRef.current = currentScreen;
+  }, [currentScreen]);
+
+  useEffect(() => () => {
+    if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
+  }, []);
+
+  const handleScreenChange = useCallback((newScreen: Screen) => {
+    // Игнорируем повторные вызовы во время перехода и переход на тот же экран
+    if (glitchTimerRef.current || newScreen === currentScreenRef.current) return;
+
     // Add glitch effect during transition
     setIsGlitching(true);
-    setTimeout(() => {
+    glitchTimerRef.current = setTimeout(() => {
+      glitchTimerRef.current = null;
       setCurrentScreen(newScreen);
       setIsGlitching(false);
     }, 200);
-  };
+  }, []);
+
+  const handleBootComplete = useCallback(() => handleScreenChange('terminal'), [handleScreenChange]);
+  const handleBack = useCallback(() => handleScreenChange('terminal'), [handleScreenChange]);
 
   const screenVariants = {
     enter: {
@@ -98,6 +114,7 @@ const glitchVariants: Variants = {
         variants={glitchVariants}
         animate={isGlitching ? 'glitch' : 'normal'}
       >
+        <Suspense fallback={<div className="w-full h-screen bg-[#050508]" />}>
         <AnimatePresence mode="wait">
           {currentScreen === 'boot' && (
             <motion.div
@@ -108,7 +125,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <BootScreen onComplete={() => handleScreenChange('terminal')} />
+              <BootScreen onComplete={handleBootComplete} />
             </motion.div>
           )}
 
@@ -135,7 +152,7 @@ const glitchVariants: Variants = {
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
               <ProfileScreen
-                    onBack={() => handleScreenChange('terminal')}
+                    onBack={handleBack}
                     onNavigate={handleScreenChange}
                   />
             </motion.div>
@@ -150,7 +167,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <SkillsScreen onBack={() => handleScreenChange('terminal')} onNavigate={handleScreenChange}  skills={ DEFAULT_SKILLS} />
+              <SkillsScreen onBack={handleBack} onNavigate={handleScreenChange}  skills={ DEFAULT_SKILLS} />
             </motion.div>
           )}
 
@@ -163,7 +180,7 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <ProjectsScreen onBack={() => handleScreenChange('terminal')} onNavigate={handleScreenChange}/>
+              <ProjectsScreen onBack={handleBack} onNavigate={handleScreenChange}/>
             </motion.div>
           )}
 
@@ -176,10 +193,11 @@ const glitchVariants: Variants = {
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <ContactsScreen onBack={() => handleScreenChange('terminal')} onNavigate={handleScreenChange}/>
+              <ContactsScreen onBack={handleBack} onNavigate={handleScreenChange}/>
             </motion.div>
           )}
         </AnimatePresence>
+        </Suspense>
       </motion.div>
       
     </div>

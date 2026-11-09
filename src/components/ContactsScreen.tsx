@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { MapPin, Calendar, ExternalLink, Copy, Check } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 import { FloatingBackground } from './FloatingElement';
 import { ScreenHeader } from './ScreenHeader';
 import { CONTACTS_DATA } from '../data/contacts';

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ExternalLink, Github, X } from 'lucide-react';
 import type { Project } from '../types/projects';
 import { getCategoryIcon, getStatusColor } from '../utils/utils';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 
 interface ProjectModalProps {
   project: Project;
@@ -11,11 +11,11 @@ interface ProjectModalProps {
 }
 
 export const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
-  const { t } = useLanguage();
+  const { t, tArray } = useLanguage();
 
   const title = t(`${project.translationKey}.title`);
   const detailedDescription = t(`${project.translationKey}.detailedDescription`);
-  const features = (t(`${project.translationKey}.features`) as unknown as string[]) || [];
+  const features = tArray(`${project.translationKey}.features`);
 
   const statusLabel = t(`projects.statuses.${project.status}`);
   const categoryLabel = t(`projects.categories.${project.category}`);
@@ -142,7 +142,7 @@ export const ProjectModal = memo(({ project, onClose }: ProjectModalProps) => {
               {t('modal.keyFeatures')}
             </h4>
             <ul className="space-y-2">
-              {Array.isArray(features) && features.map((feature, i) => (
+              {features.map((feature, i) => (
                 <li key={i} className="flex items-start space-x-3 jetbrains text-sm md:text-base text-[#00E0FF]">
                   <span className="text-[#0FF4F8] mt-0.5">▸</span>
                   <span>{feature}</span>

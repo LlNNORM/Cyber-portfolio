@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Eye, Star } from 'lucide-react';
 import type { Project } from '../types/projects';
 import { getCategoryIcon, getStatusColor } from '../utils/utils';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 
 interface ProjectCardProps {
   project: Project;

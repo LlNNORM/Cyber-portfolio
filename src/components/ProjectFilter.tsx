@@ -1,6 +1,6 @@
 import React from 'react';
 import { Filter } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 
 interface ProjectFilterProps {
   categories: string[];

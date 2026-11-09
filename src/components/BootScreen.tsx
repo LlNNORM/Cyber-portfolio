@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Logo from '../assets/dragon-logo.svg?react';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 
 interface BootScreenProps {
   onComplete: () => void;
@@ -12,7 +12,7 @@ const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   
-    const bootSteps = [
+  const bootSteps = [
     'boot.initializing',
     'boot.loading',
     'boot.establishing',
@@ -22,21 +22,26 @@ const BootScreen: React.FC<BootScreenProps> = ({ onComplete }) => {
     'boot.welcome'
   ];
 
+  // Храним актуальный onComplete в ref, чтобы смена ссылки не перезапускала таймеры
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress(prev => {
-        const newProgress = prev + 1;
-        if (newProgress >= 100) {
-          clearInterval(interval);
-          setTimeout(onComplete, 1000);
-          return 100;
-        }
-        return newProgress;
-      });
+      setProgress(prev => Math.min(prev + 1, 100));
     }, 50);
 
     return () => clearInterval(interval);
-  }, [onComplete]);
+  }, []);
+
+  // Побочный эффект завершения вынесен из setState-обновителя
+  useEffect(() => {
+    if (progress < 100) return;
+    const timeout = setTimeout(() => onCompleteRef.current(), 1000);
+    return () => clearTimeout(timeout);
+  }, [progress]);
 
   useEffect(() => {
     const stepInterval = setInterval(() => {

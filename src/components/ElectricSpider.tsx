@@ -397,8 +397,8 @@ const ElectricSpider: React.FC<
       // на мобильных устройствах.
       const count =
         window.innerWidth < 768
-          ? 120
-          : 300;
+          ? 60
+          : 140;
 
       for (let i = 0; i < count; i++) {
         const minLength = 50;
@@ -486,7 +486,8 @@ const ElectricSpider: React.FC<
       }
     );
 
-    window.addEventListener(
+    // pointerleave на window не срабатывает — слушаем корневой элемент документа
+    document.documentElement.addEventListener(
       "pointerleave",
       handlePointerLeave
     );
@@ -645,6 +646,21 @@ const ElectricSpider: React.FC<
         requestAnimationFrame(draw);
     };
 
+    // Останавливаем анимацию, пока вкладка скрыта
+    const handleVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationId);
+        animationId = 0;
+      } else if (!animationId) {
+        draw();
+      }
+    };
+
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibility
+    );
+
     draw();
 
     return () => {
@@ -652,12 +668,17 @@ const ElectricSpider: React.FC<
         animationId
       );
 
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibility
+      );
+
       window.removeEventListener(
         "pointermove",
         handlePointerMove
       );
 
-      window.removeEventListener(
+      document.documentElement.removeEventListener(
         "pointerleave",
         handlePointerLeave
       );

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Languages, ArrowRight } from 'lucide-react';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 
 interface LanguageSwitcherProps {
   className?: string;

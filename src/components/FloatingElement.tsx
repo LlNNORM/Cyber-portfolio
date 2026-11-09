@@ -79,6 +79,8 @@ export const FloatingBackground: React.FC<FloatingBackgroundProps> = ({
       delay: random(delayRange[0], delayRange[1]),
       rotate: enableRotation,
     }));
+  // Элементы генерируются один раз при монтировании намеренно
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -6,7 +6,7 @@ import { ProjectCard } from './ProjectCard';
 import { ProjectModal } from './ProjectModal';
 import { ScreenHeader } from './ScreenHeader';
 import { ProjectFilter } from './ProjectFilter';
-import { useLanguage } from './LanguageContext';
+import { useLanguage } from './useLanguage';
 import type { Screen } from '../types/screens';
 
 interface ProjectsScreenProps {
